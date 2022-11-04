@@ -9,8 +9,8 @@ class VerificationController extends Controller
 {
 	public function verifyEmail(Request $request)
 	{
-		$user = User::where('token', $request->token)->get();
-		$user->email_verified_at = now();
+		$user = User::where('token', $request->token)->get()->first();
+		$user->markEmailAsVerified();
 		return response()->json('Email Verified Successfully', 200);
 	}
 }
