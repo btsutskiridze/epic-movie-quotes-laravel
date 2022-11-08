@@ -22,7 +22,7 @@ Route::controller(AuthController::class)->group(function () {
 	Route::post('login', 'login')->name('user.register');
 	Route::post('auto-login', 'autoLogin')->name('user.auto-login');
 });
-Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verifyEmail');
+Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verify-email');
 
 Route::controller(GoogleController::class)->middleware(['web'])->group(function () {
 	Route::get('redirect', 'redirectToGoogle')->name('google.redirect');
