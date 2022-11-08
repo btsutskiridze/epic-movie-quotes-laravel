@@ -12,7 +12,7 @@ class VerificationController extends Controller
 	public function verifyEmail(Request $request): JsonResponse
 	{
 		$user = User::where('token', $request->token)->get()->first();
-		if ($user != null)
+		if (isset($user))
 		{
 			$user->markEmailAsVerified();
 			$token = strval(auth()->login($user));

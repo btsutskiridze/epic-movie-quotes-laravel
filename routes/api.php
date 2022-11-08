@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
 	Route::post('login', 'login')->name('user.register');
-	Route::post('auto-login', 'autoLogin')->name('user.autoLogin');
+	Route::post('auto-login', 'autoLogin')->name('user.auto-login');
 });
 Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verifyEmail');
 
