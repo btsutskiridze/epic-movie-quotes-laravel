@@ -8,6 +8,8 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\VerificationMail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -39,6 +41,13 @@ class AuthController extends Controller
 			]], 404);
 		}
 
+		return $this->respondWithToken($token);
+	}
+
+	public function autoLogin(Request $request): JsonResponse
+	{
+		$user = User::where('email', $request->email)->first();
+		$token = strval(Auth::login($user));
 		return $this->respondWithToken($token);
 	}
 }
