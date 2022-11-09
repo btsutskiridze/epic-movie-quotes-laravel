@@ -14,7 +14,7 @@
 
 <body class="antialiased">
     <div class="flex justify-center w-screen text-red-800">
-        hello world
+        movie quotes
     </div>
 </body>
 
