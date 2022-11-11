@@ -1,3 +1,3 @@
 <?php
 
-return ['url'=> env('FRONT_URL', '')];
+return ['url'=> env('FRONT_URL', '') . 'verify'];
