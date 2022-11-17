@@ -21,6 +21,8 @@ class StoreMovieRequest extends FormRequest
 			'director_ka'   => 'required',
 			'description_en'=> 'required',
 			'description_ka'=> 'required',
+			'year'          => 'required',
+			'budget'        => 'required',
 			'thumbnail'     => 'required',
 		];
 	}
