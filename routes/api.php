@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,9 @@ Route::controller(GoogleController::class)->middleware(['web'])->group(function 
 Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('forget-password', 'sentEmail')->name('forget.password');
 	Route::post('reset-password', 'updatePassword')->name('reset.password');
+});
+
+Route::controller(MovieController::class)->group(function () {
+	Route::get('movies', 'index')->name('index.movies');
+	Route::post('movie/store', 'store')->name('store.movie');
 });
