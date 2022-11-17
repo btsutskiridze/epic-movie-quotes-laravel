@@ -8,6 +8,11 @@ use Illuminate\Http\JsonResponse;
 
 class MovieController extends Controller
 {
+	public function index()
+	{
+		return response()->json(auth()->user()->movies);
+	}
+
 	public function store(StoreMovieRequest $request): JsonResponse
 	{
 		$movie = new Movie();
@@ -27,8 +32,8 @@ class MovieController extends Controller
 		return response()->json('movie added', 200);
 	}
 
-	public function index()
+	public function get(Movie $movie)
 	{
-		return response()->json(auth()->user()->movies);
+		return response()->json($movie);
 	}
 }

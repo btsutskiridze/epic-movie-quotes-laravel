@@ -38,4 +38,5 @@ Route::controller(ResetPasswordController::class)->group(function () {
 Route::controller(MovieController::class)->group(function () {
 	Route::get('movies', 'index')->name('index.movies');
 	Route::post('movie/store', 'store')->name('store.movie');
+	Route::get('movies/{movie:id}', 'get')->name('get.movies');
 });
