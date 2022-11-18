@@ -15,7 +15,7 @@ class VerificationController extends Controller
 		if (isset($user))
 		{
 			$user->markEmailAsVerified();
-			$token = strval(auth()->login($user));
+			$token = strval(auth()->login($user, $remember = true));
 			return $this->respondWithToken($token);
 		}
 		return response()->json(['error'=>'Email Verification failed'], 422);

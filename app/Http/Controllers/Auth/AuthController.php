@@ -32,7 +32,7 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
-		$token = auth()->attempt($request->all());
+		$token = auth()->attempt($request->all(), $remember = true);
 
 		if (!$token)
 		{
@@ -47,7 +47,7 @@ class AuthController extends Controller
 	public function autoLogin(Request $request): JsonResponse
 	{
 		$user = User::where('email', $request->email)->first();
-		$token = strval(Auth::login($user));
+		$token = strval(Auth::login($user, $remember = true));
 		return $this->respondWithToken($token);
 	}
 }
