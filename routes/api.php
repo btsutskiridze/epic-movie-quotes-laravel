@@ -36,8 +36,9 @@ Route::controller(ResetPasswordController::class)->group(function () {
 });
 
 Route::controller(MovieController::class)->group(function () {
-	Route::get('movies', 'index')->name('index.movies');
-	Route::post('movie/store', 'store')->name('store.movie');
-	Route::get('movies/{movie:id}', 'get')->name('get.movies');
-	Route::post('movies/{movie:id}/update', 'update')->name('update.movies');
+	Route::get('movies', 'index')->name('movies.index');
+	Route::post('movie/store', 'store')->name('movie.store');
+	Route::get('movies/{movie:id}', 'get')->name('movies.get');
+	Route::post('movies/{movie:id}/update', 'update')->name('movies.update');
+	Route::delete('/movies/{movie:id}/destroy', 'destroy')->name('movie.destroy');
 });

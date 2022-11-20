@@ -65,4 +65,10 @@ class MovieController extends Controller
 
 		return response()->json('movie updated', 200);
 	}
+
+	public function destroy(Movie $movie): JsonResponse
+	{
+		$movie->delete();
+		return response()->json('movie deleted', 200);
+	}
 }
