@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\MovieController;
-use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
