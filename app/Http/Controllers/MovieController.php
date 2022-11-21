@@ -12,13 +12,13 @@ class MovieController extends Controller
 {
 	public function index()
 	{
-		return response()->json(auth()->user()->movies);
+		return response()->json(jwtUser()->movies);
 	}
 
 	public function store(StoreMovieRequest $request): JsonResponse
 	{
 		$movie = new Movie();
-		$movie->user_id = auth()->id();
+		$movie->user_id = jwtUser()->id;
 		$movie->setTranslation('title', 'en', $request->title_en);
 		$movie->setTranslation('title', 'ka', $request->title_ka);
 		$movie->genre = json_encode($request->genre);

@@ -37,7 +37,7 @@ class JwtAuthMiddleware
 				$token,
 				new Key(
 					config('auth.jwt_secret'),
-					'HS256'
+					config('auth.jwt_algo'),
 				)
 			);
 

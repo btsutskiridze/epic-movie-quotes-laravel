@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -34,12 +33,7 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
-		$authenticated = auth()->attempt(
-			[
-				'email'    => request()->email,
-				'password' => request()->password,
-			]
-		);
+		$authenticated = auth()->attempt($request->all());
 
 		if (!$authenticated)
 		{
@@ -49,8 +43,8 @@ class AuthController extends Controller
 		}
 
 		$payload = [
-			'exp' => Carbon::now()->addSeconds(30)->timestamp,
-			'uid' => User::where('email', '=', request()->email)->first()->id,
+			'exp' => Carbon::now()->addDay()->timestamp,
+			'uid' => User::where('email', $request->email)->first()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
@@ -60,10 +54,36 @@ class AuthController extends Controller
 		return response()->json('success', 200)->withCookie($cookie);
 	}
 
+	public function logout(): JsonResponse
+	{
+		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('success', 200)->withCookie($cookie);
+	}
+
 	public function autoLogin(Request $request): JsonResponse
 	{
-		$user = User::where('email', $request->email)->first();
-		$token = strval(Auth::login($user, $remember = true));
-		return $this->respondWithToken($token);
+		$myRequest = $request->email == null ? 'token' : 'email';
+		$payload = [
+			'exp' => Carbon::now()->addDay()->timestamp,
+			'uid' => User::where($myRequest, $request[$myRequest])->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
+
+		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('success', 200)->withCookie($cookie);
+	}
+
+	public function me(): JsonResponse
+	{
+		return response()->json(
+			[
+				'message' => 'authenticated successfully',
+				'user'    => jwtUser(),
+			],
+			200
+		);
 	}
 }
