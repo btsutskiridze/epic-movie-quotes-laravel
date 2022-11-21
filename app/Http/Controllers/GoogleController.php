@@ -26,7 +26,7 @@ class GoogleController extends Controller
 			if ($finduser)
 			{
 				//if the user exists, login and show dashboard
-				$jwt_token = strval(Auth::login($finduser));
+				$jwt_token = strval(Auth::login($finduser, $remember = true));
 				$expires_in = auth()->factory()->getTTL() * 60;
 			}
 			else
@@ -41,7 +41,7 @@ class GoogleController extends Controller
 				$newUser->markEmailAsVerified();
 				$newUser->save();
 				//login as the new user
-				$jwt_token = strval(Auth::login($newUser));
+				$jwt_token = strval(Auth::login($newUser, $remember = true));
 				$expires_in = auth()->factory()->getTTL() * 60;
 				// go to the dashboard
 			}

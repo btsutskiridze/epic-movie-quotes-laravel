@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
-	Route::post('login', 'login')->name('user.register');
+	Route::post('login', 'login')->middleware('email.verified')->name('user.register');
 	Route::post('auto-login', 'autoLogin')->name('user.auto-login');
 });
 Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verify-email');
@@ -32,4 +33,12 @@ Route::controller(GoogleController::class)->middleware(['web'])->group(function 
 Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('forget-password', 'sentEmail')->name('forget.password');
 	Route::post('reset-password', 'updatePassword')->name('reset.password');
+});
+
+Route::controller(MovieController::class)->group(function () {
+	Route::get('movies', 'index')->name('movies.index');
+	Route::post('movie/store', 'store')->name('movie.store');
+	Route::get('movies/{movie:id}', 'get')->name('movies.get');
+	Route::post('movies/{movie:id}/update', 'update')->name('movies.update');
+	Route::delete('/movies/{movie:id}/destroy', 'destroy')->name('movie.destroy');
 });
