@@ -51,16 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
 		'email_verified_at' => 'datetime',
 	];
 
-	public function getJWTIdentifier(): mixed
-	{
-		return $this->getKey();
-	}
-
-	public function getJWTCustomClaims(): array
-	{
-		return [];
-	}
-
 	public function movies(): HasMany
 	{
 		return $this->hasMany(Movie::class);

@@ -13,7 +13,7 @@ return [
 	*/
 
 	'defaults' => [
-		'guard'     => 'api',
+		'guard'     => 'web',
 		'passwords' => 'users',
 	],
 
@@ -39,10 +39,10 @@ return [
 			'driver'   => 'session',
 			'provider' => 'users',
 		],
-		'api' => [
-			'driver'   => 'jwt',
-			'provider' => 'users',
-		],
+		// 'api' => [
+		// 	'driver'   => 'jwt',
+		// 	'provider' => 'users',
+		// ],
 	],
 
 	/*
@@ -110,4 +110,9 @@ return [
 	*/
 
 	'password_timeout' => 10800,
+
+	'jwt_secret' => env('JWT_SECRET'),
+
+	'jwt_algo'                   => env('JWT_ALGO'),
+	'front_end_top_level_domain' => env('FRONT_TOP_LEVEL_DOMAIN'),
 ];

@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\VerificationMail;
 use App\Models\User;
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,16 +34,30 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
-		$token = auth()->attempt($request->all(), $remember = true);
+		$authenticated = auth()->attempt(
+			[
+				'email'    => request()->email,
+				'password' => request()->password,
+			]
+		);
 
-		if (!$token)
+		if (!$authenticated)
 		{
 			return response()->json(['errors'=> [
 				'password'=> 'invalid password',
 			]], 404);
 		}
 
-		return $this->respondWithToken($token);
+		$payload = [
+			'exp' => Carbon::now()->addSeconds(30)->timestamp,
+			'uid' => User::where('email', '=', request()->email)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
+
+		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('success', 200)->withCookie($cookie);
 	}
 
 	public function autoLogin(Request $request): JsonResponse
