@@ -12,7 +12,7 @@ class EmailVerificationMiddleware
 	public function handle(Request $request, Closure $next): JsonResponse
 	{
 		$user = User::where('email', $request->email)->first();
-		if (!isset($user->email_verified_at))
+		if ($user && !isset($user->email_verified_at))
 		{
 			return response()->json(['errors'=> [
 				'verification'=> 'email is not verified',

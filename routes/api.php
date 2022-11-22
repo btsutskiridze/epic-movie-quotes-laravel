@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\MovieController;
-use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,12 +20,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
 	Route::post('register', 'register')->name('user.register');
-	Route::post('login', 'login')->middleware('email.verified')->name('user.register');
+	Route::post('login', 'login')->middleware('email.verified')->name('user.login');
+	Route::get('logout', 'logout')->middleware('jwt.auth')->name('user.logout');
 	Route::post('auto-login', 'autoLogin')->name('user.auto-login');
+	Route::get('me', 'me')->middleware('jwt.auth')->name('me');
 });
 Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verify-email');
 
-Route::controller(GoogleController::class)->middleware(['web'])->group(function () {
+Route::controller(GoogleController::class)->group(function () {
 	Route::get('redirect', 'redirectToGoogle')->name('google.redirect');
 	Route::get('callback', 'handleGoogleCallback')->name('google.callback');
 });
