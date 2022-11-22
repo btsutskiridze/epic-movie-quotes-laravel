@@ -12,7 +12,7 @@ class MovieController extends Controller
 {
 	public function index()
 	{
-		return response()->json(jwtUser()->movies);
+		return response()->json(jwtUser()->movies->load('quotes'));
 	}
 
 	public function store(StoreMovieRequest $request): JsonResponse
@@ -36,7 +36,7 @@ class MovieController extends Controller
 
 	public function get(Movie $movie)
 	{
-		return response()->json($movie);
+		return response()->json($movie->load('quotes'));
 	}
 
 	public function update(Movie $movie, Request $request)
