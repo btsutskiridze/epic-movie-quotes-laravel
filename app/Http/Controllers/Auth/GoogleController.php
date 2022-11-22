@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Auth;
+use Firebase\JWT\JWT;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -13,7 +14,7 @@ class GoogleController extends Controller
 {
 	public function redirectToGoogle()
 	{
-		return Socialite::driver('google')->redirect();
+		return Socialite::driver('google')->stateless()->redirect();
 	}
 
 	public function handleGoogleCallback()
@@ -21,14 +22,20 @@ class GoogleController extends Controller
 		try
 		{
 			//create a user using socialite driver google
-			$googleUser = Socialite::driver('google')->user();
+			$googleUser = Socialite::driver('google')->stateless()->user();
 			// if the user exits, use that user and login
 			$finduser = User::where('email', $googleUser->email)->get()->first();
 			if ($finduser)
 			{
-				//if the user exists, login and show dashboard
-				$jwt_token = strval(Auth::login($finduser, $remember = true));
-				$expires_in = auth()->factory()->getTTL() * 60;
+				$payload = [
+					'exp' => Carbon::now()->addDay()->timestamp,
+					'uid' => $finduser->id,
+				];
+
+				$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
+
+				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+				return redirect(env('FRONT_URL'))->withCookie($cookie);
 			}
 			else
 			{
@@ -39,14 +46,18 @@ class GoogleController extends Controller
 					'password' => encrypt(''),
 					'token'    => Str::random(60),
 				]);
-				$newUser->markEmailAsVerified();
-				$newUser->save();
-				//login as the new user
-				$jwt_token = strval(Auth::login($newUser, $remember = true));
-				$expires_in = auth()->factory()->getTTL() * 60;
+
+				$payload = [
+					'exp' => Carbon::now()->addDay()->timestamp,
+					'uid' => $newUser->id,
+				];
+
+				$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
+
+				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+				return redirect(env('FRONT_URL'))->withCookie($cookie);
 				// go to the dashboard
 			}
-			return redirect(env('FRONT_URL') . 'google-redirect/?jwt_token=' . $jwt_token . '&expires_in=' . $expires_in);
 			//catch exceptions
 		}
 		catch (Exception $e)

@@ -27,7 +27,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verify-email');
 
-Route::controller(GoogleController::class)->middleware(['web'])->group(function () {
+Route::controller(GoogleController::class)->group(function () {
 	Route::get('redirect', 'redirectToGoogle')->name('google.redirect');
 	Route::get('callback', 'handleGoogleCallback')->name('google.callback');
 });
