@@ -28,7 +28,7 @@ class GoogleController extends Controller
 			if ($finduser)
 			{
 				$payload = [
-					'exp' => Carbon::now()->addDay()->timestamp,
+					'exp' => Carbon::now()->addSeconds(30)->timestamp,
 					'uid' => $finduser->id,
 				];
 
@@ -48,7 +48,7 @@ class GoogleController extends Controller
 				]);
 
 				$payload = [
-					'exp' => Carbon::now()->addDay()->timestamp,
+					'exp' => Carbon::now()->addSeconds(30)->timestamp,
 					'uid' => $newUser->id,
 				];
 

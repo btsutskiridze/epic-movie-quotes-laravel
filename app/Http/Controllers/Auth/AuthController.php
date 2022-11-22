@@ -33,7 +33,10 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
-		$authenticated = auth()->attempt($request->all());
+		$authenticated = auth()->attempt([
+			'email'   => $request->email,
+			'password'=> $request->password,
+		]);
 
 		if (!$authenticated)
 		{
@@ -41,15 +44,16 @@ class AuthController extends Controller
 				'password'=> 'invalid password',
 			]], 404);
 		}
+		$exp_time = $request->remember ? 525600 : 1440;
 
 		$payload = [
-			'exp' => Carbon::now()->addDay()->timestamp,
+			'exp' => Carbon::now()->addMinutes(1)->timestamp,
 			'uid' => User::where('email', $request->email)->first()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
 
-		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+		$cookie = cookie('access_token', $jwt, $exp_time, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
 		return response()->json('success', 200)->withCookie($cookie);
 	}
@@ -65,7 +69,7 @@ class AuthController extends Controller
 	{
 		$myRequest = $request->email == null ? 'token' : 'email';
 		$payload = [
-			'exp' => Carbon::now()->addDay()->timestamp,
+			'exp' => Carbon::now()->addSeconds(30)->timestamp,
 			'uid' => User::where($myRequest, $request[$myRequest])->first()->id,
 		];
 
