@@ -48,4 +48,7 @@ Route::controller(MovieController::class)->group(function () {
 
 Route::controller(QuoteController::class)->group(function () {
 	Route::post('quote/store', 'store')->name('quote.store');
+	Route::get('quotes/{quote:id}', 'get')->name('quotes.get');
+	Route::post('quotes/{quote:id}/update', 'update')->name('quotes.update');
+	Route::delete('quotes/{quote:id}/destroy', 'destroy')->name('quote.destroy');
 });
