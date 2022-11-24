@@ -47,8 +47,10 @@ Route::controller(MovieController::class)->group(function () {
 });
 
 Route::controller(QuoteController::class)->group(function () {
+	Route::get('quotes', 'index')->name('quotes.index');
 	Route::post('quote/store', 'store')->name('quote.store');
-	Route::get('quotes/{quote:id}', 'get')->name('quotes.get');
+	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
+	Route::get('quotes/{quote:id}/with-relations', 'getWithRelations')->name('quote.with-relations');
 	Route::post('quotes/{quote:id}/update', 'update')->name('quotes.update');
 	Route::delete('quotes/{quote:id}/destroy', 'destroy')->name('quote.destroy');
 });

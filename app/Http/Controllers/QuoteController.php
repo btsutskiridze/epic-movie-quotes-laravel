@@ -11,7 +11,7 @@ class QuoteController extends Controller
 {
 	public function index()
 	{
-		return response()->json(jwtUser()->quotes);
+		return response()->json(Quote::with(['movie', 'user'])->orderBy('updated_at', 'DESC')->get());
 	}
 
 	public function store(Request $request)
@@ -46,6 +46,11 @@ class QuoteController extends Controller
 	public function get(Quote $quote)
 	{
 		return response()->json($quote);
+	}
+
+	public function getWithRelations(Quote $quote)
+	{
+		return response()->json($quote->load('user', 'movie'));
 	}
 
 	public function destroy(Quote $quote): JsonResponse
