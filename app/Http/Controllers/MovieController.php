@@ -36,7 +36,7 @@ class MovieController extends Controller
 
 	public function get(Movie $movie)
 	{
-		return response()->json($movie->load('quotes'));
+		return response()->json($movie->load(['quotes.comments', 'quotes.likes']));
 	}
 
 	public function update(Movie $movie, Request $request)

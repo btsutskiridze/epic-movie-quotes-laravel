@@ -7,6 +7,7 @@ use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,4 +59,9 @@ Route::controller(QuoteController::class)->group(function () {
 
 Route::controller(CommentController::class)->group(function () {
 	Route::post('quotes/{quote:id}/comment', 'store')->name('comment.store');
+});
+
+Route::controller(LikesController::class)->group(function () {
+	Route::post('quotes/{quote:id}/likable', 'likable')->name('quote.likable');
+	Route::post('quotes/{quote:id}/like', 'like')->name('quote.like');
 });
