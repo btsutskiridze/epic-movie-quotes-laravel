@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,4 +54,8 @@ Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes/{quote:id}/with-relations', 'getWithRelations')->name('quote.with-relations');
 	Route::post('quotes/{quote:id}/update', 'update')->name('quotes.update');
 	Route::delete('quotes/{quote:id}/destroy', 'destroy')->name('quote.destroy');
+});
+
+Route::controller(CommentController::class)->group(function () {
+	Route::post('quotes/{quote:id}/comment', 'store')->name('comment.store');
 });
