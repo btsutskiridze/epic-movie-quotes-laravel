@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -42,5 +43,14 @@ Route::controller(MovieController::class)->group(function () {
 	Route::post('movie/store', 'store')->name('movie.store');
 	Route::get('movies/{movie:id}', 'get')->name('movies.get');
 	Route::post('movies/{movie:id}/update', 'update')->name('movies.update');
-	Route::delete('/movies/{movie:id}/destroy', 'destroy')->name('movie.destroy');
+	Route::delete('movies/{movie:id}/destroy', 'destroy')->name('movie.destroy');
+});
+
+Route::controller(QuoteController::class)->group(function () {
+	Route::get('quotes', 'index')->name('quotes.index');
+	Route::post('quote/store', 'store')->name('quote.store');
+	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
+	Route::get('quotes/{quote:id}/with-relations', 'getWithRelations')->name('quote.with-relations');
+	Route::post('quotes/{quote:id}/update', 'update')->name('quotes.update');
+	Route::delete('quotes/{quote:id}/destroy', 'destroy')->name('quote.destroy');
 });

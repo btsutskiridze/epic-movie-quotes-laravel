@@ -28,13 +28,13 @@ class GoogleController extends Controller
 			if ($finduser)
 			{
 				$payload = [
-					'exp' => Carbon::now()->addSeconds(30)->timestamp,
+					'exp' => Carbon::now()->addDay()->timestamp,
 					'uid' => $finduser->id,
 				];
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
 
-				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+				$cookie = cookie('access_token', $jwt, 60, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 				return redirect(env('FRONT_URL'))->withCookie($cookie);
 			}
 			else
@@ -48,13 +48,13 @@ class GoogleController extends Controller
 				]);
 
 				$payload = [
-					'exp' => Carbon::now()->addSeconds(30)->timestamp,
+					'exp' => Carbon::now()->addDay()->timestamp,
 					'uid' => $newUser->id,
 				];
 
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
 
-				$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+				$cookie = cookie('access_token', $jwt, 60, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 				return redirect(env('FRONT_URL'))->withCookie($cookie);
 				// go to the dashboard
 			}
