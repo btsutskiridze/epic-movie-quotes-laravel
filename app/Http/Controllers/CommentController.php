@@ -17,6 +17,6 @@ class CommentController extends Controller
 			'body'    => $request->body,
 		]);
 
-		return response()->json('comment added', 200);
+		return response()->json('comment added');
 	}
 }
