@@ -11,7 +11,7 @@ class QuoteController extends Controller
 {
 	public function index()
 	{
-		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')->get());
+		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')->paginate(2));
 	}
 
 	public function store(Request $request)
