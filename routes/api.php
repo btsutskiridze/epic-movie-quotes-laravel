@@ -50,6 +50,7 @@ Route::controller(MovieController::class)->group(function () {
 
 Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes', 'index')->name('quotes.index');
+	Route::post('number-quotes', 'numberQuotes')->name('quotes.number');
 	Route::post('quote/store', 'store')->name('quote.store');
 	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
 	Route::get('quotes/{quote:id}/with-relations', 'getWithRelations')->name('quote.with-relations');
