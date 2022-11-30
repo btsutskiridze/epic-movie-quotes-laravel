@@ -2,13 +2,14 @@
 
 namespace App\Events;
 
+use App\Models\Notification;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationEvent implements ShouldBroadcastNow
+class NotificationEvent implements ShouldBroadcast
 {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -17,8 +18,11 @@ class NotificationEvent implements ShouldBroadcastNow
 	 *
 	 * @return void
 	 */
-	public function __construct(public $notification)
+	public $notification;
+
+	public function __construct(Notification $notification)
 	{
+		$this->notification = $notification;
 	}
 
 	/**
@@ -28,7 +32,7 @@ class NotificationEvent implements ShouldBroadcastNow
 	 */
 	public function broadcastOn()
 	{
-		return new PrivateChannel('like-notification.' . $this->notification['author_id']);
+		return new Channel('user-notification.' . $this->notification->user_id);
 	}
 
 	public function broadcastAs()
