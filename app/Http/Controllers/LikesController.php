@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\AddLikeEvent;
+use App\Events\NotificationEvent;
 use App\Models\Like;
+use App\Models\Notification;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 
@@ -30,6 +32,17 @@ class LikesController extends Controller
 		$quote->likes()->create([
 			'user_id' => jwtUser()->id,
 		]);
+
+		if ($request->to_id !== jwtUser()->id)
+		{
+			$notification = Notification::create([
+				'from_id'  => $request->from_id,
+				'user_id'  => $request->to_id,
+				'type'     => 'like',
+				'read'     => false,
+			]);
+			event(new NotificationEvent($notification));
+		}
 		return response('like added');
 	}
 }
