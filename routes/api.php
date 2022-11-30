@@ -8,6 +8,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,4 +66,9 @@ Route::controller(CommentController::class)->group(function () {
 Route::controller(LikesController::class)->group(function () {
 	Route::post('quotes/{quote:id}/likable', 'likable')->name('quote.likable');
 	Route::post('quotes/{quote:id}/like', 'like')->name('quote.like');
+});
+
+Route::controller(NotificationController::class)->group(function () {
+	Route::get('notifications', 'index')->name('notifications.index');
+	Route::get('notifications/read-all', 'read')->name('notifications.read');
 });
