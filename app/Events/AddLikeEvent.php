@@ -8,7 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AddCommentEvent implements ShouldBroadcast
+class AddLikeEvent implements ShouldBroadcast
 {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -17,7 +17,7 @@ class AddCommentEvent implements ShouldBroadcast
 	 *
 	 * @return void
 	 */
-	public function __construct(public $comment)
+	public function __construct(public $like)
 	{
 	}
 
@@ -28,11 +28,11 @@ class AddCommentEvent implements ShouldBroadcast
 	 */
 	public function broadcastOn()
 	{
-		return new Channel('add-comment-channel');
+		return new Channel('like-channel');
 	}
 
 	public function broadcastAs()
 	{
-		return 'new-comment';
+		return 'toggle-like';
 	}
 }

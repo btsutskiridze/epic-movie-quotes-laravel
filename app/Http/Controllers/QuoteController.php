@@ -11,7 +11,17 @@ class QuoteController extends Controller
 {
 	public function index()
 	{
-		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->orderBy('updated_at', 'DESC')->get());
+		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')->paginate(2));
+	}
+
+	public function numberQuotes(Request $request)
+	{
+		return response()->json(
+			Quote::query()->take($request->count)
+			->with(['movie', 'comments.author', 'user'])->withCount('likes')
+			->orderBy('updated_at', 'DESC')
+			->get()
+		);
 	}
 
 	public function store(Request $request)
@@ -50,7 +60,7 @@ class QuoteController extends Controller
 
 	public function getWithRelations(Quote $quote)
 	{
-		return response()->json($quote->load(['user', 'movie', 'comments.author']));
+		return response()->json($quote->load(['user', 'movie', 'comments.author'])->loadCount('likes'));
 	}
 
 	public function destroy(Quote $quote): JsonResponse

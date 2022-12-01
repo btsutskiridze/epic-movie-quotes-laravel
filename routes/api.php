@@ -7,6 +7,8 @@ use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikesController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +51,7 @@ Route::controller(MovieController::class)->group(function () {
 
 Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes', 'index')->name('quotes.index');
+	Route::post('number-quotes', 'numberQuotes')->name('quotes.number');
 	Route::post('quote/store', 'store')->name('quote.store');
 	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
 	Route::get('quotes/{quote:id}/with-relations', 'getWithRelations')->name('quote.with-relations');
@@ -58,4 +61,14 @@ Route::controller(QuoteController::class)->group(function () {
 
 Route::controller(CommentController::class)->group(function () {
 	Route::post('quotes/{quote:id}/comment', 'store')->name('comment.store');
+});
+
+Route::controller(LikesController::class)->group(function () {
+	Route::post('quotes/{quote:id}/likable', 'likable')->name('quote.likable');
+	Route::post('quotes/{quote:id}/like', 'like')->name('quote.like');
+});
+
+Route::controller(NotificationController::class)->group(function () {
+	Route::get('notifications', 'index')->name('notifications.index');
+	Route::get('notifications/read-all', 'read')->name('notifications.read');
 });

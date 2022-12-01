@@ -27,4 +27,9 @@ class Quote extends Model
 	{
 		return $this->hasMany(Comment::class);
 	}
+
+	public function likes()
+	{
+		return $this->hasMany(Like::class);
+	}
 }

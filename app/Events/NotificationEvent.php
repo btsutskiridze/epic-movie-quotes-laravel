@@ -2,13 +2,14 @@
 
 namespace App\Events;
 
+use App\Models\Notification;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AddCommentEvent implements ShouldBroadcast
+class NotificationEvent implements ShouldBroadcast
 {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -17,8 +18,11 @@ class AddCommentEvent implements ShouldBroadcast
 	 *
 	 * @return void
 	 */
-	public function __construct(public $comment)
+	public $notification;
+
+	public function __construct(Notification $notification)
 	{
+		$this->notification = $notification;
 	}
 
 	/**
@@ -28,11 +32,11 @@ class AddCommentEvent implements ShouldBroadcast
 	 */
 	public function broadcastOn()
 	{
-		return new Channel('add-comment-channel');
+		return new Channel('user-notification.' . $this->notification->user_id);
 	}
 
 	public function broadcastAs()
 	{
-		return 'new-comment';
+		return 'new-notification';
 	}
 }
