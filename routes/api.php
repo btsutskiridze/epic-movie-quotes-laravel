@@ -41,7 +41,7 @@ Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('reset-password', 'updatePassword')->name('reset.password');
 });
 
-Route::controller(MovieController::class)->group(function () {
+Route::controller(MovieController::class)->middleware('jwt.auth')->group(function () {
 	Route::get('movies', 'index')->name('movies.index');
 	Route::post('movie/store', 'store')->name('movie.store');
 	Route::get('movies/{movie:id}', 'get')->name('movies.get');
