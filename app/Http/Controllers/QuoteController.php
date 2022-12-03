@@ -24,6 +24,24 @@ class QuoteController extends Controller
 		);
 	}
 
+	public function search(Request $request)
+	{
+		$search = $request->search;
+		if ($search[0] === '@')
+		{
+			$search = substr($search, 1);
+			return $this->QuotesResponse($search, 'movie');
+		}
+
+		if ($search[0] === '#')
+		{
+			$search = ltrim($search, '#');
+			return $this->QuotesResponse($search);
+		}
+
+		return $this->QuotesResponse($search);
+	}
+
 	public function store(Request $request)
 	{
 		$quote = new Quote();
@@ -67,5 +85,29 @@ class QuoteController extends Controller
 	{
 		$quote->delete();
 		return response()->json('quote deleted', 200);
+	}
+
+	private function QuotesResponse($search, $type = 'quote')
+	{
+		if ($type == 'quote')
+		{
+			return response()->json(
+				Quote::where('title->en', 'LIKE', '' . $search . '%')
+				->orWhere('title->ka', 'LIKE', '' . $search . '%')
+					->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
+					->get()
+			);
+		}
+		else
+		{
+			return response()->json(
+				Quote::whereHas('movie', function ($query) use ($search) {
+					$query->where('title->en', 'LIKE', '' . $search . '%')
+					->orWhere('title->ka', 'LIKE', '' . $search . '%');
+				})
+				->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
+				->get()
+			);
+		}
 	}
 }

@@ -56,6 +56,7 @@ Route::controller(MovieController::class)->middleware('jwt.auth')->group(functio
 
 Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes', 'index')->name('quotes.index');
+	Route::post('quotes/search', 'search')->name('quotes.search');
 	Route::post('number-quotes', 'numberQuotes')->name('quotes.number');
 	Route::post('quote/store', 'store')->name('quote.store');
 	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
