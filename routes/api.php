@@ -38,7 +38,7 @@ Route::controller(GoogleController::class)->group(function () {
 });
 
 Route::controller(UserController::class)->group(function () {
-	Route::put('user/update', 'update')->name('user.update');
+	Route::post('user/update', 'update')->name('user.update');
 });
 
 Route::controller(ResetPasswordController::class)->group(function () {

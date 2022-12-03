@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-	public function update(Request $request)
+	public function update(UpdateUserRequest $request)
 	{
 		$user = User::where('id', jwtUser()->id)->first();
+		$request->all();
 		if (isset($request->name))
 		{
 			$user->name = $request->name;
+		}
+
+		if (isset($request->image))
+		{
+			if ($user->avatar !== 'images/avatar.png')
+			{
+				Storage::delete($user->avatar);
+			}
+			$user->avatar = config('app.storage_url') . $request->file('image')->store('avatars');
 		}
 
 		if (isset($request->password))
