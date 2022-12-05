@@ -13,11 +13,7 @@ class JwtGuard
 
 	public function check()
 	{
-		if ($this->user())
-		{
-			return true;
-		}
-		return false;
+		return $this->user() ? true : false;
 	}
 
 	public function user()

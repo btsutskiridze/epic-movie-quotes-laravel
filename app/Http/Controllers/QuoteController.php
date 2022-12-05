@@ -89,25 +89,21 @@ class QuoteController extends Controller
 
 	private function QuotesResponse($search, $type = 'quote')
 	{
-		if ($type == 'quote')
-		{
-			return response()->json(
+		return $type == 'quote' ?
+			response()->json(
 				Quote::where('title->en', 'LIKE', '' . $search . '%')
 				->orWhere('title->ka', 'LIKE', '' . $search . '%')
 					->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
 					->get()
-			);
-		}
-		else
-		{
-			return response()->json(
-				Quote::whereHas('movie', function ($query) use ($search) {
-					$query->where('title->en', 'LIKE', '' . $search . '%')
-					->orWhere('title->ka', 'LIKE', '' . $search . '%');
-				})
-				->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
-				->get()
-			);
-		}
+			)
+
+		: response()->json(
+			Quote::whereHas('movie', function ($query) use ($search) {
+				$query->where('title->en', 'LIKE', '' . $search . '%')
+				->orWhere('title->ka', 'LIKE', '' . $search . '%');
+			})
+			->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
+			->get()
+		);
 	}
 }
