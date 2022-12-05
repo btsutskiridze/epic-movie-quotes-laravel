@@ -33,9 +33,10 @@ class AuthController extends Controller
 
 	public function login(LoginRequest $request): JsonResponse
 	{
+		$input = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 		$authenticated = auth()->attempt([
-			'email'   => $request->email,
-			'password'=> $request->password,
+			$input       => $request[$input],
+			'password'   => $request->password,
 		]);
 
 		if (!$authenticated)
@@ -48,7 +49,7 @@ class AuthController extends Controller
 
 		$payload = [
 			'exp' => Carbon::now()->addMinutes($exp_time)->timestamp,
-			'uid' => User::where('email', $request->email)->first()->id,
+			'uid' => User::where($input, $request[$input])->first()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));

@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,12 +37,16 @@ Route::controller(GoogleController::class)->group(function () {
 	Route::get('callback', 'handleGoogleCallback')->name('google.callback');
 });
 
-Route::controller(ResetPasswordController::class)->group(function () {
-	Route::post('forget-password', 'sentEmail')->name('forget.password');
-	Route::post('reset-password', 'updatePassword')->name('reset.password');
+Route::controller(UserController::class)->group(function () {
+	Route::post('user/update', 'update')->name('user.update');
 });
 
-Route::controller(MovieController::class)->group(function () {
+Route::controller(ResetPasswordController::class)->group(function () {
+	Route::post('forget-password', 'sentEmail')->name('password.forget');
+	Route::post('reset-password', 'updatePassword')->name('password.reset');
+});
+
+Route::controller(MovieController::class)->middleware('jwt.auth')->group(function () {
 	Route::get('movies', 'index')->name('movies.index');
 	Route::post('movie/store', 'store')->name('movie.store');
 	Route::get('movies/{movie:id}', 'get')->name('movies.get');
@@ -51,6 +56,7 @@ Route::controller(MovieController::class)->group(function () {
 
 Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes', 'index')->name('quotes.index');
+	Route::post('quotes/search', 'search')->name('quotes.search');
 	Route::post('number-quotes', 'numberQuotes')->name('quotes.number');
 	Route::post('quote/store', 'store')->name('quote.store');
 	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
