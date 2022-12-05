@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -35,7 +36,7 @@ class GoogleController extends Controller
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
 
 				$cookie = cookie('access_token', $jwt, 60, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
-				return redirect(env('FRONT_URL'))->withCookie($cookie);
+				return Redirect::to(config('app.front_url'))->withCookie($cookie);
 			}
 			else
 			{
@@ -57,7 +58,7 @@ class GoogleController extends Controller
 				$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
 
 				$cookie = cookie('access_token', $jwt, 60, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
-				return redirect(env('FRONT_URL'))->withCookie($cookie);
+				return Redirect::to(config('app.front_url'))->withCookie($cookie);
 				// go to the dashboard
 			}
 			//catch exceptions
