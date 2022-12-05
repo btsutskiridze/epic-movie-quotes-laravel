@@ -19,7 +19,7 @@ class UserController extends Controller
 
 		if (isset($request->image))
 		{
-			if (str_contains($user->avatar, 'images/avatar.png'))
+			if (!str_contains($user->avatar, 'images/avatar.png'))
 			{
 				Storage::delete($user->avatar);
 			}

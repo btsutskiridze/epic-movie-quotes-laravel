@@ -18,7 +18,7 @@ return new class() extends Migration {
 			$table->string('name')->unique();
 			$table->string('email')->unique();
 			$table->string('token')->unique();
-			$table->string('avatar')->default('src/assets/images/news-feed/avatar-2.png');
+			$table->string('avatar')->default(config('app.url') . '/images/avatar.png');
 			$table->string('password');
 			$table->timestamp('email_verified_at')->nullable();
 			$table->rememberToken();
