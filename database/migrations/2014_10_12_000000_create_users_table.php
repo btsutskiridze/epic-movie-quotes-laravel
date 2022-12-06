@@ -14,11 +14,11 @@ return new class() extends Migration {
 	{
 		Schema::create('users', function (Blueprint $table) {
 			$table->id();
-			$table->string('google_id');
+			$table->string('google_id')->nullable();
 			$table->string('name')->unique();
 			$table->string('email')->unique();
 			$table->string('token')->unique();
-			$table->string('avatar')->default('images/avatar.png');
+			$table->string('avatar')->default(config('app.url') . '/images/avatar.png');
 			$table->string('password');
 			$table->timestamp('email_verified_at')->nullable();
 			$table->rememberToken();
