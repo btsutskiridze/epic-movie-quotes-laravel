@@ -52,7 +52,7 @@ Route::controller(MovieController::class)->middleware('jwt.auth')->group(functio
 	Route::post('movie/store', 'store')->name('movie.store');
 	Route::get('movies/{movie:id}', 'get')->name('movies.get');
 	Route::post('movies/{movie:id}/update', 'update')->name('movies.update');
-	Route::delete('movies/{movie:id}/destroy', 'destroy')->name('movie.destroy');
+	Route::delete('movies/{movie:id}', 'destroy')->name('movie.destroy');
 });
 
 Route::controller(QuoteController::class)->group(function () {
@@ -63,7 +63,7 @@ Route::controller(QuoteController::class)->group(function () {
 	Route::get('quotes/{quote:id}', 'get')->name('quote.get');
 	Route::get('quotes/{quote:id}/with-relations', 'getWithRelations')->name('quote.with-relations');
 	Route::post('quotes/{quote:id}/update', 'update')->name('quotes.update');
-	Route::delete('quotes/{quote:id}/destroy', 'destroy')->name('quote.destroy');
+	Route::delete('quotes/{quote:id}', 'destroy')->name('quote.destroy');
 });
 
 Route::controller(CommentController::class)->group(function () {

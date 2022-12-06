@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -52,7 +53,14 @@ class QuoteController extends Controller
 		$quote->setTranslation('title', 'ka', $request->title_ka);
 		$quote->save();
 
-		return response()->json('quote added');
+		return response()->json(
+			[
+				'quote added',
+				'movie'=> Movie::where('id', $request->movie_id)
+					->with(['quotes.comments', 'quotes.likes'])
+					->first(),
+			]
+		);
 	}
 
 	public function update(Quote $quote, Request $request)
@@ -68,7 +76,12 @@ class QuoteController extends Controller
 
 		$quote->update();
 
-		return response()->json('quote updated');
+		return response()->json([
+			'quote updated',
+			'movie'=> Movie::where('id', $request->movie_id)
+				->with(['quotes.comments', 'quotes.likes'])
+				->first(),
+		]);
 	}
 
 	public function get(Quote $quote)
@@ -81,10 +94,15 @@ class QuoteController extends Controller
 		return response()->json($quote->load(['user', 'movie', 'comments.author'])->loadCount('likes'));
 	}
 
-	public function destroy(Quote $quote): JsonResponse
+	public function destroy(Quote $quote, Request $request): JsonResponse
 	{
 		$quote->delete();
-		return response()->json('quote deleted');
+		return response()->json([
+			'quote deleted',
+			'movie'=> Movie::where('id', $request->movie_id)
+				->with(['quotes.comments', 'quotes.likes'])
+				->first(),
+		]);
 	}
 
 	private function QuotesResponse($search, $type = 'quote')

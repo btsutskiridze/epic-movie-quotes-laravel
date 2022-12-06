@@ -63,12 +63,12 @@ class MovieController extends Controller
 
 		$movie->update();
 
-		return response()->json('movie updated');
+		return response()->json(['movie updated', 'movie'=>$movie->load(['quotes.comments', 'quotes.likes'])]);
 	}
 
 	public function destroy(Movie $movie): JsonResponse
 	{
 		$movie->delete();
-		return response()->json('movie deleted');
+		return response()->json(['movie deleted', 'movies'=>Movie::all()->load('quotes')]);
 	}
 }
