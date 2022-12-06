@@ -37,13 +37,12 @@ class AuthController extends Controller
 		$input = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 		$value = $request[$input];
 
-		$existsInUsers = User::where('email', $request[$input])->first();
-		$existsInEmails = Email::where('email', $request[$input])->first();
-		if ($input === 'email' && !$existsInUsers && $existsInEmails)
+		if ($input === 'email' && $this->isSecondaryEmail($value))
 		{
-			$value = User::where('id', $existsInEmails->user_id)->first()->email;
+			$user_id = $this->getSecondaryEmail($value)->user_id;
+			$value = $this->getPrimaryEmail($user_id);
 		}
-		elseif (!$existsInEmails)
+		elseif ($input !== 'name' && !$this->isPrimaryEmail($value))
 		{
 			return response()->json(['errors'=> [
 				'email'=> 'The selected email is invalid',
@@ -73,6 +72,27 @@ class AuthController extends Controller
 		$cookie = cookie('access_token', $jwt, $exp_time, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
 		return response()->json('success', 200)->withCookie($cookie);
+	}
+
+	private function isSecondaryEmail($value): bool
+	{
+		return Email::where('email', $value)->exists();
+	}
+
+	public function isPrimaryEmail($value): bool
+	{
+		return User::where('email', $value)->exists();
+	}
+
+	public function getPrimaryEmail($user_id): string
+	{
+		$user = User::where('id', $user_id)->first();
+		return  $user->email;
+	}
+
+	public function getSecondaryEmail($value): Email
+	{
+		return Email::where('email', $value)->first();
 	}
 
 	public function logout(): JsonResponse
