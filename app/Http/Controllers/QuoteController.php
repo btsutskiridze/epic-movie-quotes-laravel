@@ -15,7 +15,7 @@ class QuoteController extends Controller
 		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')->paginate(2));
 	}
 
-	public function numberQuotes(Request $request)
+	public function numberQuotes(Request $request): JsonResponse
 	{
 		return response()->json(
 			Quote::query()->take($request->count)
@@ -25,7 +25,7 @@ class QuoteController extends Controller
 		);
 	}
 
-	public function search(Request $request)
+	public function search(Request $request): JsonResponse
 	{
 		$search = $request->search;
 		if ($search[0] === '@')
@@ -43,7 +43,7 @@ class QuoteController extends Controller
 		return $this->QuotesResponse($search);
 	}
 
-	public function store(Request $request)
+	public function store(Request $request): JsonResponse
 	{
 		$quote = new Quote();
 		$quote->user_id = jwtUser()->id;
@@ -63,7 +63,7 @@ class QuoteController extends Controller
 		);
 	}
 
-	public function update(Quote $quote, Request $request)
+	public function update(Quote $quote, Request $request): JsonResponse
 	{
 		$quote->setTranslation('title', 'en', $request->title_en);
 		$quote->setTranslation('title', 'ka', $request->title_ka);
@@ -84,7 +84,7 @@ class QuoteController extends Controller
 		]);
 	}
 
-	public function get(Quote $quote)
+	public function get(Quote $quote): JsonResponse
 	{
 		return response()->json($quote);
 	}
@@ -105,7 +105,7 @@ class QuoteController extends Controller
 		]);
 	}
 
-	private function QuotesResponse($search, $type = 'quote')
+	private function QuotesResponse($search, $type = 'quote'): JsonResponse
 	{
 		return $type == 'quote' ?
 			response()->json(

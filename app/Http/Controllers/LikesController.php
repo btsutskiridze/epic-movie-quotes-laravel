@@ -7,17 +7,18 @@ use App\Events\NotificationEvent;
 use App\Models\Like;
 use App\Models\Notification;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LikesController extends Controller
 {
-	public function likable(Quote $quote)
+	public function likable(Quote $quote): JsonResponse
 	{
 		$like = Like::where('user_id', jwtUser()->id)->where('quote_id', $quote->id)->first();
 		return response()->json(['likable'=>$like ? false : true]);
 	}
 
-	public function like(Quote $quote, Request $request)
+	public function like(Quote $quote, Request $request): JsonResponse
 	{
 		event(new AddLikeEvent($request->all()));
 
@@ -26,7 +27,7 @@ class LikesController extends Controller
 		if ($like)
 		{
 			$like->delete();
-			return response('like removed');
+			return response()->json('like removed');
 		}
 
 		$quote->likes()->create([
@@ -43,6 +44,6 @@ class LikesController extends Controller
 			]);
 			event(new NotificationEvent($notification));
 		}
-		return response('like added');
+		return response()->json('like removed');
 	}
 }

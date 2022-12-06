@@ -30,7 +30,7 @@
         <p style="margin-bottom: 24px;margin-top:40px">If clicking doesn't work, you can try copying and pasting it to
             your
             browser:</p>
-        <a href="{{ config('verification.new_email_url') . '?new_email_token=' . $email->token }}"
+        <a href="{{ config('verification.new_email_url') . '?token=' . $email->token }}"
             style="margin-bottom: 40px;color:#DDCCAA;text-decoration: none;cursor: pointer">
             {{ config('verification.new_email_url') . '?new_email_token=' . $email->token }}</a>
         <p style="margin-bottom: 24px">If you have any problems, please contact us: support@moviequotes.ge</p>

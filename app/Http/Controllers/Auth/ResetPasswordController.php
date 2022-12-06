@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,7 @@ use Illuminate\Validation\ValidationException;
 
 class ResetPasswordController extends Controller
 {
-	public function sentEmail(Request $request)
+	public function sentEmail(Request $request): JsonResponse
 	{
 		$request->validate(['email' => 'required|exists:users,email']);
 
@@ -33,7 +34,7 @@ class ResetPasswordController extends Controller
 		return response()->json('message sent');
 	}
 
-	public function updatePassword(Request $request)
+	public function updatePassword(Request $request): JsonResponse
 	{
 		$request->validate([
 			'token'                 => 'required',

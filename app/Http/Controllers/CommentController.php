@@ -6,11 +6,12 @@ use App\Events\AddCommentEvent;
 use App\Events\NotificationEvent;
 use App\Models\Notification;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-	public function store(Quote $quote, Request $request)
+	public function store(Quote $quote, Request $request): JsonResponse
 	{
 		event(new AddCommentEvent($request->all()));
 
