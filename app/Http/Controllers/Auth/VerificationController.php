@@ -15,7 +15,7 @@ class VerificationController extends Controller
 		if (isset($user))
 		{
 			$user->markEmailAsVerified();
-			return response()->json('verification success', 200);
+			return response()->json('verification success');
 		}
 		return response()->json(['error'=>'Email Verification failed'], 422);
 	}

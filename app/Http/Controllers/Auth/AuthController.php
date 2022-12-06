@@ -29,7 +29,7 @@ class AuthController extends Controller
 
 		Mail::to($user->email)->send(new VerificationMail($user));
 
-		return response()->json('User successfuly registered!', 200);
+		return response()->json('User successfuly registered!');
 	}
 
 	public function login(LoginRequest $request): JsonResponse
@@ -71,7 +71,7 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, $exp_time, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('success')->withCookie($cookie);
 	}
 
 	private function isSecondaryEmail($value): bool
@@ -99,7 +99,7 @@ class AuthController extends Controller
 	{
 		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('success')->withCookie($cookie);
 	}
 
 	public function autoLogin(Request $request): JsonResponse
@@ -114,7 +114,7 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('success')->withCookie($cookie);
 	}
 
 	public function me(): JsonResponse

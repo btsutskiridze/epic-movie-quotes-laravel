@@ -52,7 +52,7 @@ class QuoteController extends Controller
 		$quote->setTranslation('title', 'ka', $request->title_ka);
 		$quote->save();
 
-		return response()->json('quote added', 200);
+		return response()->json('quote added');
 	}
 
 	public function update(Quote $quote, Request $request)
@@ -68,7 +68,7 @@ class QuoteController extends Controller
 
 		$quote->update();
 
-		return response()->json('quote updated', 200);
+		return response()->json('quote updated');
 	}
 
 	public function get(Quote $quote)
@@ -84,7 +84,7 @@ class QuoteController extends Controller
 	public function destroy(Quote $quote): JsonResponse
 	{
 		$quote->delete();
-		return response()->json('quote deleted', 200);
+		return response()->json('quote deleted');
 	}
 
 	private function QuotesResponse($search, $type = 'quote')
