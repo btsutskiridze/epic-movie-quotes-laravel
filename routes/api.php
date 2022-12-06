@@ -83,6 +83,6 @@ Route::controller(NotificationController::class)->group(function () {
 Route::controller(EmailController::class)->group(function () {
 	Route::post('emails/store', 'store')->name('email.store');
 	Route::post('email/verification', 'verification')->name('email.verification');
-	Route::post('delete/{email:id}', 'delete')->name('email.delete');
+	Route::delete('email/{email:id}', 'delete')->name('email.delete');
 	Route::post('emails/{email:id}/make-primary', 'makePrimary')->name('email.make-primary');
 });
