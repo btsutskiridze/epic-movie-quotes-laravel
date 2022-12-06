@@ -7,6 +7,7 @@ use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
@@ -77,4 +78,11 @@ Route::controller(LikesController::class)->group(function () {
 Route::controller(NotificationController::class)->group(function () {
 	Route::get('notifications', 'index')->name('notifications.index');
 	Route::get('notifications/read-all', 'read')->name('notifications.read');
+});
+
+Route::controller(EmailController::class)->group(function () {
+	Route::post('emails/store', 'store')->name('email.store');
+	Route::post('email/verification', 'verification')->name('email.verification');
+	Route::post('delete/{email:id}', 'delete')->name('email.delete');
+	Route::post('emails/{email:id}/make-primary', 'makePrimary')->name('email.make-primary');
 });

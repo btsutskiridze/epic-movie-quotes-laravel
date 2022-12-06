@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\VerificationMail;
+use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
@@ -34,8 +35,23 @@ class AuthController extends Controller
 	public function login(LoginRequest $request): JsonResponse
 	{
 		$input = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+		$value = $request[$input];
+
+		$existsInUsers = User::where('email', $request[$input])->first();
+		$existsInEmails = Email::where('email', $request[$input])->first();
+		if ($input === 'email' && !$existsInUsers && $existsInEmails)
+		{
+			$value = User::where('id', $existsInEmails->user_id)->first()->email;
+		}
+		elseif (!$existsInEmails)
+		{
+			return response()->json(['errors'=> [
+				'email'=> 'The selected email is invalid',
+			]], 404);
+		}
+
 		$authenticated = auth()->attempt([
-			$input       => $request[$input],
+			$input       => $value,
 			'password'   => $request->password,
 		]);
 
@@ -49,7 +65,7 @@ class AuthController extends Controller
 
 		$payload = [
 			'exp' => Carbon::now()->addMinutes($exp_time)->timestamp,
-			'uid' => User::where($input, $request[$input])->first()->id,
+			'uid' => User::where($input, $value)->first()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
@@ -86,7 +102,7 @@ class AuthController extends Controller
 		return response()->json(
 			[
 				'message' => 'authenticated successfully',
-				'user'    => jwtUser(),
+				'user'    => jwtUser()->load('emails'),
 			],
 			200
 		);
