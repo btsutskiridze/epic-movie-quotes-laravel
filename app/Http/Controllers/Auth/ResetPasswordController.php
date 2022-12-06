@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
 		$user = User::where('email', $request->email)->first();
 		Mail::to($request->email)->send(new ResetPasswordMail($user, $token));
 
-		return response()->json('message sent', 200);
+		return response()->json('message sent');
 	}
 
 	public function updatePassword(Request $request)

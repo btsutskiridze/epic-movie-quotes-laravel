@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\VerificationMail;
+use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
@@ -28,14 +29,28 @@ class AuthController extends Controller
 
 		Mail::to($user->email)->send(new VerificationMail($user));
 
-		return response()->json('User successfuly registered!', 200);
+		return response()->json('User successfuly registered!');
 	}
 
 	public function login(LoginRequest $request): JsonResponse
 	{
 		$input = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+		$value = $request[$input];
+
+		if ($input === 'email' && $this->isSecondaryEmail($value))
+		{
+			$user_id = $this->getSecondaryEmail($value)->user_id;
+			$value = $this->getPrimaryEmail($user_id);
+		}
+		elseif ($input !== 'name' && !$this->isPrimaryEmail($value))
+		{
+			return response()->json(['errors'=> [
+				'email'=> 'The selected email is invalid',
+			]], 404);
+		}
+
 		$authenticated = auth()->attempt([
-			$input       => $request[$input],
+			$input       => $value,
 			'password'   => $request->password,
 		]);
 
@@ -49,21 +64,42 @@ class AuthController extends Controller
 
 		$payload = [
 			'exp' => Carbon::now()->addMinutes($exp_time)->timestamp,
-			'uid' => User::where($input, $request[$input])->first()->id,
+			'uid' => User::where($input, $value)->first()->id,
 		];
 
 		$jwt = JWT::encode($payload, config('auth.jwt_secret'), config('auth.jwt_algo'));
 
 		$cookie = cookie('access_token', $jwt, $exp_time, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('success')->withCookie($cookie);
+	}
+
+	private function isSecondaryEmail($value): bool
+	{
+		return Email::where('email', $value)->exists();
+	}
+
+	public function isPrimaryEmail($value): bool
+	{
+		return User::where('email', $value)->exists();
+	}
+
+	public function getPrimaryEmail($user_id): string
+	{
+		$user = User::where('id', $user_id)->first();
+		return  $user->email;
+	}
+
+	public function getSecondaryEmail($value): Email
+	{
+		return Email::where('email', $value)->first();
 	}
 
 	public function logout(): JsonResponse
 	{
 		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('success')->withCookie($cookie);
 	}
 
 	public function autoLogin(Request $request): JsonResponse
@@ -78,7 +114,7 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json('success')->withCookie($cookie);
 	}
 
 	public function me(): JsonResponse
@@ -86,7 +122,7 @@ class AuthController extends Controller
 		return response()->json(
 			[
 				'message' => 'authenticated successfully',
-				'user'    => jwtUser(),
+				'user'    => jwtUser()->load('emails'),
 			],
 			200
 		);

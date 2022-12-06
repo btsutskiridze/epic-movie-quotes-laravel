@@ -31,7 +31,7 @@ class MovieController extends Controller
 		$movie->thumbnail = $request->file('thumbnail')->store('thumbnails');
 		$movie->save();
 
-		return response()->json('movie added', 200);
+		return response()->json('movie added');
 	}
 
 	public function get(Movie $movie)
@@ -63,12 +63,12 @@ class MovieController extends Controller
 
 		$movie->update();
 
-		return response()->json('movie updated', 200);
+		return response()->json('movie updated');
 	}
 
 	public function destroy(Movie $movie): JsonResponse
 	{
 		$movie->delete();
-		return response()->json('movie deleted', 200);
+		return response()->json('movie deleted');
 	}
 }
