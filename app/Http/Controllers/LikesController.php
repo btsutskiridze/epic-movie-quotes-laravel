@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\AddLikeEvent;
 use App\Events\NotificationEvent;
+use App\Http\Requests\LikeRequest;
 use App\Models\Like;
 use App\Models\Notification;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class LikesController extends Controller
 {
@@ -18,7 +18,7 @@ class LikesController extends Controller
 		return response()->json(['likable'=>$like ? false : true]);
 	}
 
-	public function like(Quote $quote, Request $request): JsonResponse
+	public function like(Quote $quote, LikeRequest $request): JsonResponse
 	{
 		event(new AddLikeEvent($request->all()));
 
