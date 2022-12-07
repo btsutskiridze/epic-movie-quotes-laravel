@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\AutoLoginRequest;
 use App\Mail\VerificationMail;
 use App\Models\Email;
 use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -102,7 +102,7 @@ class AuthController extends Controller
 		return response()->json('success')->withCookie($cookie);
 	}
 
-	public function autoLogin(Request $request): JsonResponse
+	public function autoLogin(AutoLoginRequest $request): JsonResponse
 	{
 		$myRequest = $request->email == null ? 'token' : 'email';
 		$payload = [

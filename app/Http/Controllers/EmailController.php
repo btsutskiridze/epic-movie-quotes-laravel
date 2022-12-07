@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailRequest;
+use App\Http\Requests\NewEmailVerificationRequest;
 use App\Models\Email;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\NewEmailMail;
@@ -27,7 +27,7 @@ class EmailController extends Controller
 		return response()->json('email added');
 	}
 
-	public function verification(Request $request): JsonResponse
+	public function verification(NewEmailVerificationRequest $request): JsonResponse
 	{
 		$email = Email::where('token', $request->token)->first();
 		if (isset($email))

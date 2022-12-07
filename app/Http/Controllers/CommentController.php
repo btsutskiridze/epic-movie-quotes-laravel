@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Events\AddCommentEvent;
 use App\Events\NotificationEvent;
+use App\Http\Requests\CommentRequest;
 use App\Models\Notification;
 use App\Models\Quote;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-	public function store(Quote $quote, Request $request)
+	public function store(Quote $quote, CommentRequest $request): JsonResponse
 	{
 		event(new AddCommentEvent($request->all()));
 

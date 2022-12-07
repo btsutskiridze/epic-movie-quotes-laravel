@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
-	public function index()
+	public function index(): JsonResponse
 	{
 		return response()->json(jwtUser()->movies->load('quotes'));
 	}
@@ -34,12 +34,12 @@ class MovieController extends Controller
 		return response()->json('movie added');
 	}
 
-	public function get(Movie $movie)
+	public function get(Movie $movie): JsonResponse
 	{
 		return response()->json($movie->load(['quotes.comments', 'quotes.likes']));
 	}
 
-	public function update(Movie $movie, Request $request)
+	public function update(Movie $movie, Request $request): JsonResponse
 	{
 		$movie->setTranslation('title', 'en', $request->title_en);
 		$movie->setTranslation('title', 'ka', $request->title_ka);
@@ -63,12 +63,12 @@ class MovieController extends Controller
 
 		$movie->update();
 
-		return response()->json('movie updated');
+		return response()->json(['movie updated', 'movie'=>$movie->load(['quotes.comments', 'quotes.likes'])]);
 	}
 
 	public function destroy(Movie $movie): JsonResponse
 	{
 		$movie->delete();
-		return response()->json('movie deleted');
+		return response()->json(['movie deleted', 'movies'=>Movie::all()->load('quotes')]);
 	}
 }

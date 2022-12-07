@@ -7,18 +7,19 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Firebase\JWT\JWT;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
-	public function redirectToGoogle()
+	public function redirectToGoogle(): RedirectResponse
 	{
 		return Socialite::driver('google')->stateless()->redirect();
 	}
 
-	public function handleGoogleCallback()
+	public function handleGoogleCallback(): RedirectResponse
 	{
 		try
 		{

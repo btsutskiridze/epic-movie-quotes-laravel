@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class QuoteController extends Controller
 		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')->paginate(2));
 	}
 
-	public function numberQuotes(Request $request)
+	public function numberQuotes(Request $request): JsonResponse
 	{
 		return response()->json(
 			Quote::query()->take($request->count)
@@ -24,7 +25,7 @@ class QuoteController extends Controller
 		);
 	}
 
-	public function search(Request $request)
+	public function search(Request $request): JsonResponse
 	{
 		$search = $request->search;
 		if ($search[0] === '@')
@@ -42,7 +43,7 @@ class QuoteController extends Controller
 		return $this->QuotesResponse($search);
 	}
 
-	public function store(Request $request)
+	public function store(Request $request): JsonResponse
 	{
 		$quote = new Quote();
 		$quote->user_id = jwtUser()->id;
@@ -52,10 +53,17 @@ class QuoteController extends Controller
 		$quote->setTranslation('title', 'ka', $request->title_ka);
 		$quote->save();
 
-		return response()->json('quote added');
+		return response()->json(
+			[
+				'quote added',
+				'movie'=> Movie::where('id', $request->movie_id)
+					->with(['quotes.comments', 'quotes.likes'])
+					->first(),
+			]
+		);
 	}
 
-	public function update(Quote $quote, Request $request)
+	public function update(Quote $quote, Request $request): JsonResponse
 	{
 		$quote->setTranslation('title', 'en', $request->title_en);
 		$quote->setTranslation('title', 'ka', $request->title_ka);
@@ -68,10 +76,15 @@ class QuoteController extends Controller
 
 		$quote->update();
 
-		return response()->json('quote updated');
+		return response()->json([
+			'quote updated',
+			'movie'=> Movie::where('id', $request->movie_id)
+				->with(['quotes.comments', 'quotes.likes'])
+				->first(),
+		]);
 	}
 
-	public function get(Quote $quote)
+	public function get(Quote $quote): JsonResponse
 	{
 		return response()->json($quote);
 	}
@@ -81,13 +94,18 @@ class QuoteController extends Controller
 		return response()->json($quote->load(['user', 'movie', 'comments.author'])->loadCount('likes'));
 	}
 
-	public function destroy(Quote $quote): JsonResponse
+	public function destroy(Quote $quote, Request $request): JsonResponse
 	{
 		$quote->delete();
-		return response()->json('quote deleted');
+		return response()->json([
+			'quote deleted',
+			'movie'=> Movie::where('id', $request->movie_id)
+				->with(['quotes.comments', 'quotes.likes'])
+				->first(),
+		]);
 	}
 
-	private function QuotesResponse($search, $type = 'quote')
+	private function QuotesResponse($search, $type = 'quote'): JsonResponse
 	{
 		return $type == 'quote' ?
 			response()->json(

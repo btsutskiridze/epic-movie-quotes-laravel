@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ForgetPasswordRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -15,10 +17,8 @@ use Illuminate\Validation\ValidationException;
 
 class ResetPasswordController extends Controller
 {
-	public function sentEmail(Request $request)
+	public function sentEmail(ForgetPasswordRequest $request): JsonResponse
 	{
-		$request->validate(['email' => 'required|exists:users,email']);
-
 		$token = Str::random(64);
 
 		DB::table('password_resets')->insert([
@@ -33,15 +33,8 @@ class ResetPasswordController extends Controller
 		return response()->json('message sent');
 	}
 
-	public function updatePassword(Request $request)
+	public function updatePassword(ResetPasswordRequest $request): JsonResponse
 	{
-		$request->validate([
-			'token'                 => 'required',
-			'email'                 => 'required|exists:users,email',
-			'password'              => 'required|min:4|confirmed',
-			'password_confirmation' => 'required',
-		]);
-
 		$updatePassword = DB::table('password_resets')
 			->where([
 				'email' => $request->email,
