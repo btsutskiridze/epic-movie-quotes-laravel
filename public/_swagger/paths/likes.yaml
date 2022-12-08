@@ -1,0 +1,56 @@
+paths:
+  /quote/{id}/likable:
+    post:
+      tags:
+        - Likes
+      security:
+        - bearerAuth: []
+      summary: Check if post is liked by logged user
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: json
+                example: { "likable": true }
+  # /quotes/{id}/likable:
+  #   $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
+  # /quotes/{id}/like:
+  #   $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
+  /quote/{id}/like:
+    post:
+      tags:
+        - Likes
+      security:
+        - bearerAuth: []
+      summary: addes or removes like from post
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from_id:
+                  type: integer
+                  example: 2
+                to_id:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "like added"

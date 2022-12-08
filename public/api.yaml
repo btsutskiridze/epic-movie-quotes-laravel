@@ -57,7 +57,10 @@ paths:
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1{id}~1update"
   /quotes/{id}/comment:
     $ref: "./_swagger/paths/comments.yaml#/paths/~1quote~1{id}~1comment"
-
+  /quotes/{id}/likable:
+    $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
+  /quotes/{id}/like:
+    $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1like"
 components:
   securitySchemes:
     bearerAuth:
