@@ -29,8 +29,7 @@ paths:
       responses:
         "200":
           $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
-  # /number-quotes:
-  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~number~1quotes"
+
   /number-quotes:
     post:
       tags:
@@ -51,8 +50,7 @@ paths:
       responses:
         "200":
           $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
-  # /quote/store:
-  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1store"
+
   /quote/store:
     post:
       tags:
@@ -70,8 +68,7 @@ paths:
       responses:
         "200":
           $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
-  # /quotes/{id}:
-  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1{id}"
+
   /quote/{id}:
     get:
       tags:
@@ -109,8 +106,7 @@ paths:
       responses:
         "200":
           $ref: "../responses/movies.yaml#/components/responses/movies/200"
-  # /quotes/{id}/with-relations:
-  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1{id}~1with-relations"
+
   /quotes/{id}/with-relations:
     get:
       tags:
@@ -125,8 +121,7 @@ paths:
       responses:
         "200":
           $ref: "../responses/quotes.yaml#/components/responses/quote/200"
-    # /quotes/{id}/update:
-    #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1{id}~1update"
+
   /quote/{id}/update:
     post:
       tags:
