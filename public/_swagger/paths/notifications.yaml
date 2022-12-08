@@ -1,0 +1,51 @@
+paths:
+  /notifications:
+    get:
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      summary: Returns all the notifications
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                  {
+                    "notifications":
+                      [
+                        {
+                          "id": 1,
+                          "from_id": 2,
+                          "to_id": 10,
+                          "type": "like",
+                          "read": true,
+                          "created_at": "2022-07-26T20:06:02.000000Z",
+                          "updated_at": "2022-07-26T20:06:02.000000Z",
+                        },
+                      ],
+                    "allRead": false,
+                    "read": 4,
+                  }
+  /notifications/read-all:
+    get:
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      summary: reading logged user's notifications
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "all read"
+  #/notifications:
+  #   $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications"
+  # /notifications/read-all:
+  #   $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications~1read-all

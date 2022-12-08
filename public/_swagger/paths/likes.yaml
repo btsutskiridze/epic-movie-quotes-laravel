@@ -18,10 +18,6 @@ paths:
               schema:
                 type: json
                 example: { "likable": true }
-  # /quotes/{id}/likable:
-  #   $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
-  # /quotes/{id}/like:
-  #   $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
   /quote/{id}/like:
     post:
       tags:

@@ -61,6 +61,10 @@ paths:
     $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
   /quotes/{id}/like:
     $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1like"
+  /notifications:
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications"
+  /notifications/read-all:
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications~1read-all"
 components:
   securitySchemes:
     bearerAuth:
@@ -80,6 +84,12 @@ components:
     Comment:
       allOf:
         - $ref: "./_swagger/schemas/comment.yaml#/components/schemas/Comment"
+    Like:
+      allOf:
+        - $ref: "./_swagger/schemas/like.yaml#/components/schemas/Like"
+    Notification:
+      allOf:
+        - $ref: "./_swagger/schemas/notification.yaml#/components/schemas/Notification"
     # Register:
     #   allOf:
     #     - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"
