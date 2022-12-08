@@ -65,6 +65,14 @@ paths:
     $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications"
   /notifications/read-all:
     $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications~1read-all"
+  /emails/store:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1store"
+  /email/verification:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1verification"
+  /email/{id}:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1{id}"
+  /emails/{id}/make-primary:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1{id}~1make-primary"
 components:
   securitySchemes:
     bearerAuth:
@@ -90,6 +98,9 @@ components:
     Notification:
       allOf:
         - $ref: "./_swagger/schemas/notification.yaml#/components/schemas/Notification"
+    Email:
+      allOf:
+        - $ref: "./_swagger/schemas/email.yaml#/components/schemas/Email"
     # Register:
     #   allOf:
     #     - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"

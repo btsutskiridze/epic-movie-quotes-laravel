@@ -45,7 +45,3 @@ paths:
               schema:
                 type: string
                 example: "all read"
-  #/notifications:
-  #   $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications"
-  # /notifications/read-all:
-  #   $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications~1read-all

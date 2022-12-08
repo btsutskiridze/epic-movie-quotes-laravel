@@ -1,0 +1,103 @@
+paths:
+  /emails/store:
+    post:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: "add secondary email"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "test@gmail.com"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "email added"
+  # /email/verification:
+  #   $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1verification"
+  /emails/verification:
+    post:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: "verify secondary email"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "HN6iubeoFdmftcfVFXXtenKZumDgezUafiGrsULiAaHMJzWpd99qdNZqJfVa"
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "verification success"
+        "422":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "verification failed"
+  # /email/{id}:
+  #   $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1{id}"
+  /emails/{id}:
+    delete:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: "delete secondary email"
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "email deleted"
+
+  # /emails/{id}/make-primary:
+  #   $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1{id}~1make-primary"
+  /emails/{id}/make-primary:
+    post:
+      tags:
+        - Emails
+      security:
+        - bearerAuth: []
+      summary: "make secondary email primary"
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "email replaced successfully"
