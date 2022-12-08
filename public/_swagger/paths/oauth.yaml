@@ -1,0 +1,17 @@
+paths:
+  /redirect:
+    get:
+      tags:
+        - Oauth
+      summary: redirect user to google login
+      responses:
+        "200":
+          $ref: "../common.yaml#/components/responses/200"
+  /callback:
+    get:
+      tags:
+        - Oauth
+      summary: redirect user to application
+      responses:
+        "200":
+          $ref: "../common.yaml#/components/responses/200"

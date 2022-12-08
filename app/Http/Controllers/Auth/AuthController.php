@@ -71,7 +71,7 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, $exp_time, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success')->withCookie($cookie);
+		return response()->json('User successfuly logged in!')->withCookie($cookie);
 	}
 
 	private function isSecondaryEmail($value): bool

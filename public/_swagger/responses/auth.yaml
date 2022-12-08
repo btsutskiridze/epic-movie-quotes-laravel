@@ -1,0 +1,49 @@
+components:
+  responses:
+    me:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "../schemas/user.yaml#/components/schemas/User"
+    register:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example: "User successfuly registered!"
+    login:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example: "User successfuly logged in!"
+    forget-password:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example: "message sent"
+      "422":
+        description: Unprocessable Content
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "selected email is invalid"
+    user-update:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example: "user updated"
+    reset-password:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example: "password updated"

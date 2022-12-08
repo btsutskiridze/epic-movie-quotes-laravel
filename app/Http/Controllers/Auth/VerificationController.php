@@ -11,12 +11,12 @@ class VerificationController extends Controller
 {
 	public function verifyEmail(VerificationRequest $request): JsonResponse
 	{
-		$user = User::where('token', $request->token)->get()->first();
+		$user = User::where('token', $request->token)->first();
 		if (isset($user))
 		{
 			$user->markEmailAsVerified();
 			return response()->json('verification success');
 		}
-		return response()->json(['error'=>'Email Verification failed'], 422);
+		return response()->json(['error'=>'Email Verification failed'], 404);
 	}
 }

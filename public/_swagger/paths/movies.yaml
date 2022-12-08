@@ -1,0 +1,16 @@
+paths:
+  /movies:
+    get:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: Get all the movies
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"
+      definitions:
+        AllContacts:
+          type: array
+          items:
+            $ref: "../schemas/movie.yaml#/components/schemas/Movie"

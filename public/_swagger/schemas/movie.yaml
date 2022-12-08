@@ -1,0 +1,47 @@
+components:
+  schemas:
+    Movie:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 2
+            title:
+              type: object
+              properties:
+                en:
+                  type: string
+                  example: "title english"
+                ka:
+                  type: string
+                  example: "სათაური ქართულად"
+            director:
+              type: object
+              properties:
+                en:
+                  type: string
+                  example: "ermalo magrade"
+                ka:
+                  type: string
+                  example: "ერმალო მაღრაძე"
+            description:
+              type: object
+              properties:
+                en:
+                  type: string
+                  example: "description english"
+                ka:
+                  type: string
+                  example: "აღწერა ქართულად"
+            year:
+              type: integer
+              example: 2000
+            budget:
+              type: integer
+              example: 2000000
+            thumbnail:
+              type: string
+              example: "thumbnails/thumbnail.png"
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
