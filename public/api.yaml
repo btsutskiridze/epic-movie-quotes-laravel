@@ -28,14 +28,19 @@ paths:
   /reset-password:
     $ref: "./_swagger/paths/auth.yaml#/paths/~1reset-password"
   /user/update:
-    $ref: "./_swagger/paths/auth.yaml#/paths/~1user-update"
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1user~1update"
   /redirect:
     $ref: "./_swagger/paths/oauth.yaml#/paths/~1redirect"
   /callback:
     $ref: "./_swagger/paths/oauth.yaml#/paths/~1callback"
   /movies:
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movies"
-
+  /movies/{id}:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{id}"
+  /movie/store:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movie~1store"
+  /movies/{id}/update:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{id}~1update"
 components:
   securitySchemes:
     bearerAuth:
@@ -46,6 +51,9 @@ components:
     User:
       allOf:
         - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"
+    Movie:
+      allOf:
+        - $ref: "./_swagger/schemas/user.yaml#/components/schemas/Movie"
     # Register:
     #   allOf:
     #     - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"

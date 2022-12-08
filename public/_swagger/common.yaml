@@ -33,6 +33,42 @@ components:
         password:
           type: string
           example: mypass1234
+    Movie:
+      type: object
+      properties:
+        title:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "title english"
+            ka:
+              type: string
+              example: "სათაური ქართულად"
+        director:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "ermalo magrade"
+            ka:
+              type: string
+              example: "ერმალო მაღრაძე"
+        description:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "description english"
+            ka:
+              type: string
+              example: "აღწერა ქართულად"
+        year:
+          type: integer
+          example: 2000
+        budget:
+          type: integer
+          example: 2000000
     TimeStamps:
       type: object
       properties:

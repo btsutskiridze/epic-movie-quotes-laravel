@@ -8,40 +8,43 @@ components:
             user_id:
               type: integer
               example: 2
-            title:
-              type: object
-              properties:
-                en:
-                  type: string
-                  example: "title english"
-                ka:
-                  type: string
-                  example: "სათაური ქართულად"
-            director:
-              type: object
-              properties:
-                en:
-                  type: string
-                  example: "ermalo magrade"
-                ka:
-                  type: string
-                  example: "ერმალო მაღრაძე"
-            description:
-              type: object
-              properties:
-                en:
-                  type: string
-                  example: "description english"
-                ka:
-                  type: string
-                  example: "აღწერა ქართულად"
-            year:
-              type: integer
-              example: 2000
-            budget:
-              type: integer
-              example: 2000000
+        - $ref: "../common.yaml#/components/schemas/Movie"
+          type: object
+          properties:
             thumbnail:
               type: string
               example: "thumbnails/thumbnail.png"
         - $ref: "../common.yaml#/components/schemas/TimeStamps"
+    Movie-store:
+      type: object
+      properties:
+        title_en:
+          type: string
+          example: titleeeee
+        title_ka:
+          type: string
+          example: სათაურიიიი
+        genre:
+          type: string
+          example: "[ 'comedy', 'horror']"
+        director_en:
+          type: string
+          example: directooooor
+        director_ka:
+          type: string
+          example: "რეჟისორი ერმალო"
+        description_en:
+          type: string
+          example: "this is my movie description"
+        description_ka:
+          type: string
+          example: "ეს არის ჩემი ფილმის აღწერა"
+        year:
+          type: integer
+          example: 1999
+        budget:
+          type: integer
+          example: 200000
+        thumbnail:
+          type: string
+          format: binary

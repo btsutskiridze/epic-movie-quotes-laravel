@@ -167,7 +167,7 @@ paths:
       responses:
         "200":
           $ref: "../responses/auth.yaml#/components/responses/reset-password/200"
-  /user-update:
+  /user/update:
     post:
       tags:
         - Auth
