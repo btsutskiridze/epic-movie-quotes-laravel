@@ -63,12 +63,12 @@ components:
             ka:
               type: string
               example: "აღწერა ქართულად"
-        year:
-          type: integer
-          example: 2000
-        budget:
-          type: integer
-          example: 2000000
+    Quote:
+      type: object
+      properties:
+        title:
+          type: json
+          example: { "en": "this is quote", "ka": "ჩემი ციტატა" }
     TimeStamps:
       type: object
       properties:

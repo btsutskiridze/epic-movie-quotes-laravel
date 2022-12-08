@@ -41,6 +41,20 @@ paths:
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movie~1store"
   /movies/{id}/update:
     $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{id}~1update"
+  /quotes:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes"
+  /quotes/search:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1search"
+  /number-quotes:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1number-quotes"
+  /quote/store:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1store"
+  /quotes/{id}:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1{id}"
+  /quotes/{id}/with-relations:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{id}~1with-relations"
+  /quotes/{id}/update:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1{id}~1update"
 components:
   securitySchemes:
     bearerAuth:
@@ -53,7 +67,10 @@ components:
         - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"
     Movie:
       allOf:
-        - $ref: "./_swagger/schemas/user.yaml#/components/schemas/Movie"
+        - $ref: "./_swagger/schemas/movie.yaml#/components/schemas/Movie"
+    Quote:
+      allOf:
+        - $ref: "./_swagger/schemas/quote.yaml#/components/schemas/Quote"
     # Register:
     #   allOf:
     #     - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"

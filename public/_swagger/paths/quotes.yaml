@@ -1,0 +1,146 @@
+paths:
+  /quotes:
+    get:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: Get all the Quotes
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+  /quotes/search:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: returns searched quotes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  example: "enww"
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+  # /number-quotes:
+  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~number~1quotes"
+  /number-quotes:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: returns specific number of quotes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: number
+                  example: 2
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+  # /quote/store:
+  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1store"
+  /quote/store:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: stores new quote
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: "../schemas/quote.yaml#/components/schemas/Quote-store"
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quotes/200"
+  # /quotes/{id}:
+  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1{id}"
+  /quote/{id}:
+    get:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: get single quote
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quote/200"
+    delete:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: delete quote
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                movie_id:
+                  type: string
+                  example: 4
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"
+  # /quotes/{id}/with-relations:
+  #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1{id}~1with-relations"
+  /quotes/{id}/with-relations:
+    get:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: get single quote with relations
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/quotes.yaml#/components/responses/quote/200"
+    # /quotes/{id}/update:
+    #   $ref: "./_swagger/paths/quotes.yaml#/paths/~quote~1{id}~1update"
+  /quote/{id}/update:
+    post:
+      tags:
+        - Quotes
+      security:
+        - bearerAuth: []
+      summary: update quote
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: "../schemas/quote.yaml#/components/schemas/Quote-store"
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"

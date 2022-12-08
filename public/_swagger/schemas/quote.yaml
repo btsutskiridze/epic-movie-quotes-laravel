@@ -1,0 +1,32 @@
+components:
+  schemas:
+    Quote:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 2
+        - $ref: "../common.yaml#/components/schemas/Quote"
+        - type: object
+          properties:
+            thumbnail:
+              type: string
+              example: "thumbnails/thumbnail.png"
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
+    Quote-store:
+      type: object
+      properties:
+        movie_id:
+          type: integer
+          example: 6
+        title_en:
+          type: string
+          example: titleeeee
+        title_ka:
+          type: string
+          example: სათაურიიიი
+        thumbnail:
+          type: string
+          format: binary
