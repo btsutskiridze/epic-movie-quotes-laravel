@@ -55,6 +55,9 @@ paths:
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{id}~1with-relations"
   /quotes/{id}/update:
     $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1{id}~1update"
+  /quotes/{id}/comment:
+    $ref: "./_swagger/paths/comments.yaml#/paths/~1quote~1{id}~1comment"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -71,6 +74,9 @@ components:
     Quote:
       allOf:
         - $ref: "./_swagger/schemas/quote.yaml#/components/schemas/Quote"
+    Comment:
+      allOf:
+        - $ref: "./_swagger/schemas/comment.yaml#/components/schemas/Comment"
     # Register:
     #   allOf:
     #     - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"

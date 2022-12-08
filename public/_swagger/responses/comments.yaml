@@ -1,0 +1,9 @@
+components:
+  responses:
+    comment:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              example: "comment added"

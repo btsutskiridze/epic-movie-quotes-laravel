@@ -129,6 +129,10 @@ paths:
       security:
         - bearerAuth: []
       summary: update quote
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
       requestBody:
         required: true
         content:
