@@ -1,0 +1,194 @@
+paths:
+  /me:
+    get:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: Checks if user is authorized
+
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/me/200"
+        "401":
+          $ref: "../common.yaml#/components/responses/401"
+
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "../common.yaml#/components/schemas/User"
+                - type: object
+                  properties:
+                    password:
+                      type: string
+                      example: pass1234
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/register/200"
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    email:
+                      type: string
+                      example: bakari@redberry.ge
+                    password:
+                      type: string
+                      example: pass1234
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/login/200"
+        "401":
+          $ref: "../common.yaml#/components/responses/401"
+  /auto-login:
+    post:
+      tags:
+        - Auth
+      summary: auto login user after successful verification message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    email:
+                      type: string
+                      example: bakari@redberry.ge
+                    token:
+                      type: string
+                      example: XhjZsiusOPOyBl6tbB7PkCgruBt8eImsF0rdTIdMOk5boQHliwAlaswZISEm
+                  required:
+                    - token
+      responses:
+        "200":
+          $ref: "../common.yaml#/components/responses/200"
+        "401":
+          $ref: "../common.yaml#/components/responses/401"
+  /logout:
+    get:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: logout user
+      responses:
+        "200":
+          $ref: "../common.yaml#/components/responses/200"
+  /verification:
+    post:
+      tags:
+        - Auth
+      summary: verify user by token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    token:
+                      type: string
+                      example: XhjZsiusOPOyBl6tbB7PkCgruBt8eImsF0rdTIdMOk5boQHliwAlaswZISEm
+                  required:
+                    - token
+      responses:
+        "200":
+          $ref: "../common.yaml#/components/responses/200"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
+  /forget-password:
+    post:
+      tags:
+        - Auth
+      summary: send verification to email for password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    email:
+                      type: string
+                      example: bakari@redberry.ge
+                  required:
+                    - email
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/forget-password/200"
+        "422":
+          $ref: "../responses/auth.yaml#/components/responses/forget-password/422"
+  /reset-password:
+    post:
+      tags:
+        - Auth
+      summary: reset password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    token:
+                      type: string
+                      example: PgtZaTpPmh5DAKXEBw4IZW1Jp3NwkBOyhccfHECeeXMJgcUt2fGEDxJI87l8vrRP
+                    email:
+                      type: string
+                      example: bakari@redberry.ge
+                    password:
+                      type: string
+                      example: mypass1234
+                    password_confirmation:
+                      type: string
+                      example: mypass1234
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/reset-password/200"
+  /user/update:
+    post:
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      summary: reset password
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    image:
+                      type: string
+                      format: binary
+                    name:
+                      type: string
+                    password:
+                      type: string
+      responses:
+        "200":
+          $ref: "../responses/auth.yaml#/components/responses/user-update/200"

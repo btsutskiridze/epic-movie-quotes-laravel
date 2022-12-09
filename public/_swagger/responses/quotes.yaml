@@ -1,0 +1,21 @@
+components:
+  responses:
+    quotes:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../schemas/quote.yaml#/components/schemas/Quote"
+    quote:
+      "200":
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                - $ref: "../schemas/quote.yaml#/components/schemas/Quote"

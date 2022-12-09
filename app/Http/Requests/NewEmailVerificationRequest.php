@@ -14,7 +14,7 @@ class NewEmailVerificationRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'token'=> 'required|exists:users,token',
+			'token'=> 'required|exists:emails,token',
 		];
 	}
 }

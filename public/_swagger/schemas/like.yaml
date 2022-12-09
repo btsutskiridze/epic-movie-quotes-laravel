@@ -1,0 +1,14 @@
+components:
+  schemas:
+    Like:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            user_id:
+              type: integer
+              example: 2
+            quote_id:
+              type: integer
+              example: 10
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"

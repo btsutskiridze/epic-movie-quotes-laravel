@@ -48,23 +48,14 @@ class EmailController extends Controller
 	public function makePrimary(Email $email): JsonResponse
 	{
 		$user = User::where('id', jwtUser()->id)->first();
-		$nonPrimaryEmail = $user->email;
+		$newSecondaryMail = $user->email;
 
 		//replace
 		$user->email = $email->email;
 		$user->save();
 
-		//remove old
-		$email->delete();
-
-		//add new
-		$newEmail = Email::create([
-			'user_id'           => jwtUser()->id,
-			'token'             => Str::random(60),
-			'email'             => $nonPrimaryEmail,
-		]);
-		$newEmail->email_verified_at = Carbon::now();
-		$newEmail->save();
+		$email->email = $newSecondaryMail;
+		$email->save();
 
 		return response()->json('email replaced successfully', 201);
 	}

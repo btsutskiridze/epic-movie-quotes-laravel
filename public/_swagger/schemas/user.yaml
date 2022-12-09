@@ -1,0 +1,18 @@
+components:
+  schemas:
+    User:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - $ref: "../common.yaml#/components/schemas/User"
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
+        - type: object
+          properties:
+            google_id:
+              type: integer
+              example: 443243241
+            avatar:
+              type: string
+              example: http://127.0.0.1:8000/storage/avatars/image.png
+            email_verified_at:
+              type: string
+              example: "2022-12-05T21:52:13.000000Z"

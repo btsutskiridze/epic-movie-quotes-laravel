@@ -1,0 +1,98 @@
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      description: The Id of the resource
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+  schemas:
+    Id:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+          example: 1
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          example: bakari
+        email:
+          type: string
+          example: bakari@redberry.ge
+    Password:
+      type: object
+      properties:
+        password:
+          type: string
+          example: mypass1234
+    Movie:
+      type: object
+      properties:
+        title:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "title english"
+            ka:
+              type: string
+              example: "სათაური ქართულად"
+        director:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "ermalo magrade"
+            ka:
+              type: string
+              example: "ერმალო მაღრაძე"
+        description:
+          type: object
+          properties:
+            en:
+              type: string
+              example: "description english"
+            ka:
+              type: string
+              example: "აღწერა ქართულად"
+    Quote:
+      type: object
+      properties:
+        title:
+          type: json
+          example: { "en": "this is quote", "ka": "ჩემი ციტატა" }
+    TimeStamps:
+      type: object
+      properties:
+        created_at:
+          type: string
+          example: "2022-07-26T20:06:02.000000Z"
+        updated_at:
+          type: string
+          example: "2022-07-26T20:06:02.000000Z"
+
+  responses:
+    "200":
+      description: success
+    "401":
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthenticated
+    "404":
+      description: Not Found
+    "422":
+      description: Unprocessable Content

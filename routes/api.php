@@ -24,7 +24,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['jwt.auth'])->group(function () {
+Route::controller(AuthController::class)->group(function () {
+	Route::post('register', 'register')->name('user.register');
+	Route::post('login', 'login')->middleware('email.verified')->name('user.login');
+	Route::get('logout', 'logout')->middleware('jwt.auth')->name('user.logout');
+	Route::post('auto-login', 'autoLogin')->name('user.auto-login');
+	Route::get('me', 'me')->middleware('jwt.auth')->name('me');
+});
+
+Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verify-email');
+
+Route::controller(GoogleController::class)->group(function () {
+	Route::get('redirect', 'redirectToGoogle')->name('google.redirect');
+	Route::get('callback', 'handleGoogleCallback')->name('google.callback');
+});
+
+Route::controller(ResetPasswordController::class)->group(function () {
+	Route::post('forget-password', 'sentEmail')->name('password.forget');
+	Route::post('reset-password', 'updatePassword')->name('password.reset');
+});
+
+Route::middleware('jwt.auth')->group(function () {
 	Route::controller(UserController::class)->group(function () {
 		Route::post('user/update', 'update')->name('user.update');
 	});
@@ -68,24 +88,4 @@ Route::middleware(['jwt.auth'])->group(function () {
 		Route::delete('email/{email:id}', 'delete')->name('email.delete');
 		Route::post('emails/{email:id}/make-primary', 'makePrimary')->name('email.make-primary');
 	});
-});
-
-Route::controller(AuthController::class)->group(function () {
-	Route::post('register', 'register')->name('user.register');
-	Route::post('login', 'login')->middleware('email.verified')->name('user.login');
-	Route::get('logout', 'logout')->middleware('jwt.auth')->name('user.logout');
-	Route::post('auto-login', 'autoLogin')->name('user.auto-login');
-	Route::get('me', 'me')->middleware('jwt.auth')->name('me');
-});
-
-Route::post('verification', [VerificationController::class, 'verifyEmail'])->name('verification.verify-email');
-
-Route::controller(GoogleController::class)->group(function () {
-	Route::get('redirect', 'redirectToGoogle')->name('google.redirect');
-	Route::get('callback', 'handleGoogleCallback')->name('google.callback');
-});
-
-Route::controller(ResetPasswordController::class)->group(function () {
-	Route::post('forget-password', 'sentEmail')->name('password.forget');
-	Route::post('reset-password', 'updatePassword')->name('password.reset');
 });

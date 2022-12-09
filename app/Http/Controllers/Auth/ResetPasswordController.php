@@ -54,6 +54,6 @@ class ResetPasswordController extends Controller
 
 		DB::table('password_resets')->where(['email'=>$request->email])->delete();
 
-		return response()->json('success');
+		return response()->json('password updated');
 	}
 }

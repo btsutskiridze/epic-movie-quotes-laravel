@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: Epic Movie Quotes API
+  description: This is EPIIIIIIIC
+  version: 1.0.0
+
+servers:
+  - url: http://127.0.0.1:8000/api
+    description: local server
+  - url: http://producation.app/api
+    description: production server
+
+paths:
+  /me:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1me"
+  /register:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1register"
+  /login:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1login"
+  /auto-login:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1auto-login"
+  /logout:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1logout"
+  /verification:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1verification"
+  /forget-password:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1forget-password"
+  /reset-password:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1reset-password"
+  /user/update:
+    $ref: "./_swagger/paths/auth.yaml#/paths/~1user~1update"
+  /redirect:
+    $ref: "./_swagger/paths/oauth.yaml#/paths/~1redirect"
+  /callback:
+    $ref: "./_swagger/paths/oauth.yaml#/paths/~1callback"
+  /movies:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies"
+  /movies/{id}:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{id}"
+  /movie/store:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movie~1store"
+  /movies/{id}/update:
+    $ref: "./_swagger/paths/movies.yaml#/paths/~1movies~1{id}~1update"
+  /quotes:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes"
+  /quotes/search:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1search"
+  /number-quotes:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1number-quotes"
+  /quote/store:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1store"
+  /quotes/{id}:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1{id}"
+  /quotes/{id}/with-relations:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quotes~1{id}~1with-relations"
+  /quotes/{id}/update:
+    $ref: "./_swagger/paths/quotes.yaml#/paths/~1quote~1{id}~1update"
+  /quotes/{id}/comment:
+    $ref: "./_swagger/paths/comments.yaml#/paths/~1quote~1{id}~1comment"
+  /quotes/{id}/likable:
+    $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1likable"
+  /quotes/{id}/like:
+    $ref: "./_swagger/paths/likes.yaml#/paths/~1quote~1{id}~1like"
+  /notifications:
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications"
+  /notifications/read-all:
+    $ref: "./_swagger/paths/notifications.yaml#/paths/~1notifications~1read-all"
+  /emails/store:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1store"
+  /email/verification:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1verification"
+  /email/{id}:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1{id}"
+  /emails/{id}/make-primary:
+    $ref: "./_swagger/paths/emails.yaml#/paths/~1emails~1{id}~1make-primary"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      allOf:
+        - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"
+    Movie:
+      allOf:
+        - $ref: "./_swagger/schemas/movie.yaml#/components/schemas/Movie"
+    Quote:
+      allOf:
+        - $ref: "./_swagger/schemas/quote.yaml#/components/schemas/Quote"
+    Comment:
+      allOf:
+        - $ref: "./_swagger/schemas/comment.yaml#/components/schemas/Comment"
+    Like:
+      allOf:
+        - $ref: "./_swagger/schemas/like.yaml#/components/schemas/Like"
+    Notification:
+      allOf:
+        - $ref: "./_swagger/schemas/notification.yaml#/components/schemas/Notification"
+    Email:
+      allOf:
+        - $ref: "./_swagger/schemas/email.yaml#/components/schemas/Email"
+    # Register:
+    #   allOf:
+    #     - $ref: "./_swagger/schemas/user.yaml#/components/schemas/User"

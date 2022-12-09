@@ -1,0 +1,79 @@
+paths:
+  /movies:
+    get:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: Get all the movies
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movies/200"
+      definitions:
+        AllContacts:
+          type: array
+          items:
+            $ref: "../schemas/movie.yaml#/components/schemas/Movie"
+  /movies/{id}:
+    get:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: get movie
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movie/200"
+    delete:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: update the movie
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movie-destroy/200"
+
+  /movie/store:
+    post:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: create new movie
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: "../schemas/movie.yaml#/components/schemas/Movie-store"
+  /movies/{id}/update:
+    post:
+      tags:
+        - Movies
+      security:
+        - bearerAuth: []
+      summary: update the movie
+      parameters:
+        - in: path
+          allOf:
+            - $ref: "../common.yaml#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: "../schemas/movie.yaml#/components/schemas/Movie-store"
+      responses:
+        "200":
+          $ref: "../responses/movies.yaml#/components/responses/movie/200"
