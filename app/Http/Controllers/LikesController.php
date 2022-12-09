@@ -44,6 +44,6 @@ class LikesController extends Controller
 			]);
 			event(new NotificationEvent($notification));
 		}
-		return response()->json('like removed');
+		return response()->json('like added');
 	}
 }
