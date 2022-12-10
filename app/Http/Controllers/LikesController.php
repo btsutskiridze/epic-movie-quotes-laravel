@@ -42,7 +42,7 @@ class LikesController extends Controller
 				'type'     => 'like',
 				'read'     => false,
 			]);
-			event(new NotificationEvent($notification));
+			event(new NotificationEvent($notification->load('from')));
 		}
 		return response()->json('like added');
 	}
