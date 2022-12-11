@@ -39,14 +39,22 @@ class AuthController extends Controller
 
 		if ($input === 'email' && $this->isSecondaryEmail($value))
 		{
-			$user_id = $this->getSecondaryEmail($value)->user_id;
-			$value = $this->getPrimaryEmail($user_id);
+			$email = $this->getSecondaryEmail($value);
+
+			if ($email->email_verified_at === null)
+			{
+				return response()->json(['errors'=> [
+					'verification'=> 'The selected email is not verified',
+				]], 406);
+			}
+
+			$value = $this->getPrimaryEmail($email->user_id);
 		}
 		elseif ($input !== 'name' && !$this->isPrimaryEmail($value))
 		{
 			return response()->json(['errors'=> [
 				'email'=> 'The selected email is invalid',
-			]], 404);
+			]], 401);
 		}
 
 		$authenticated = auth()->attempt([
