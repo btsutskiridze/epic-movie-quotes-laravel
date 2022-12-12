@@ -18,7 +18,7 @@ class GeoTextarea implements InvokableRule
 	 */
 	public function __invoke($attribute, $value, $fail)
 	{
-		if (preg_match('/^[ა-ჰა-ჰ0-9-_\';?!:.,"\s]*$/', $value))
+		if (!preg_match('/^[ა-ჰა-ჰ0-9-_\';?!:.,"\s]*$/', $value))
 		{
 			$fail('The :attribute must be in georgian.');
 		}

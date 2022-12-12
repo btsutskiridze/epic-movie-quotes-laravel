@@ -18,7 +18,7 @@ class EngTextarea implements InvokableRule
 	 */
 	public function __invoke($attribute, $value, $fail)
 	{
-		if (preg_match('/^[a-zA-Z0-9-_\';?!:.,"\s]*$/', $value))
+		if (!preg_match('/^[a-zA-Z0-9-_\';?!:.,"\s]*$/', $value))
 		{
 			$fail('The :attribute must be in english.');
 		}

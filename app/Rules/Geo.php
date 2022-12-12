@@ -18,7 +18,7 @@ class Geo implements InvokableRule
 	 */
 	public function __invoke($attribute, $value, $fail)
 	{
-		if (preg_match('/^[ა-ჰა-ჰ\s]*$/', $value))
+		if (!preg_match('/^[ა-ჰა-ჰ\s]*$/', $value))
 		{
 			$fail('The :attribute must be in georgian.');
 		}
