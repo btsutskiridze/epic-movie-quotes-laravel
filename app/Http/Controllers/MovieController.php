@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
@@ -43,7 +43,7 @@ class MovieController extends Controller
 		return response()->json($movie->load(['quotes.comments', 'quotes.likes']));
 	}
 
-	public function update(Movie $movie, Request $request): JsonResponse
+	public function update(Movie $movie, UpdateMovieRequest $request): JsonResponse
 	{
 		if ($movie->user_id !== jwtUser()->id)
 		{
