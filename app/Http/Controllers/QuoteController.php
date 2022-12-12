@@ -110,16 +110,28 @@ class QuoteController extends Controller
 
 	public function get(Quote $quote): JsonResponse
 	{
+		if ($quote->user_id !== jwtUser()->id)
+		{
+			return response()->json('not authorized', 401);
+		}
 		return response()->json($quote);
 	}
 
 	public function getWithRelations(Quote $quote)
 	{
+		if ($quote->user_id !== jwtUser()->id)
+		{
+			return response()->json('not authorized', 401);
+		}
 		return response()->json($quote->load(['user', 'movie', 'comments.author'])->loadCount('likes'));
 	}
 
 	public function destroy(Quote $quote, DestroyQuoteRequest $request): JsonResponse
 	{
+		if ($quote->user_id !== jwtUser()->id)
+		{
+			return response()->json('not authorized', 401);
+		}
 		$quote->delete();
 		return response()->json([
 			'quote deleted',

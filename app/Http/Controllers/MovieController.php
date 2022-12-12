@@ -36,11 +36,20 @@ class MovieController extends Controller
 
 	public function get(Movie $movie): JsonResponse
 	{
+		if ($movie->user_id !== jwtUser()->id)
+		{
+			return response()->json('not authorized', 401);
+		}
 		return response()->json($movie->load(['quotes.comments', 'quotes.likes']));
 	}
 
 	public function update(Movie $movie, Request $request): JsonResponse
 	{
+		if ($movie->user_id !== jwtUser()->id)
+		{
+			return response()->json('not authorized', 401);
+		}
+
 		$movie->setTranslation('title', 'en', $request->title_en);
 		$movie->setTranslation('title', 'ka', $request->title_ka);
 		$movie->setTranslation('director', 'en', $request->director_en);
@@ -68,6 +77,11 @@ class MovieController extends Controller
 
 	public function destroy(Movie $movie): JsonResponse
 	{
+		if ($movie->user_id !== jwtUser()->id)
+		{
+			return response()->json('not authorized', 401);
+		}
+
 		$movie->delete();
 		return response()->json(['movie deleted', 'movies'=>Movie::all()->load('quotes')]);
 	}
