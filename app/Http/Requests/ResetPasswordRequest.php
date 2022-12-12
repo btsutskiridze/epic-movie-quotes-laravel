@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\LowerCase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ResetPasswordRequest extends FormRequest
@@ -16,7 +17,7 @@ class ResetPasswordRequest extends FormRequest
 		return [
 			'token'                 => 'required',
 			'email'                 => 'required|exists:users,email',
-			'password'              => 'required|confirmed',
+			'password'              => ['required', 'confirmed', 'min:8', 'max:15', new LowerCase],
 			'password_confirmation' => 'required',
 		];
 	}
