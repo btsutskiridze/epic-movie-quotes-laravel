@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyQuoteRequest;
+use App\Http\Requests\NumberQuotesRequest;
+use App\Http\Requests\SearchRequest;
+use App\Http\Requests\StoreQuoteRequest;
 use App\Models\Movie;
 use App\Models\Quote;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +19,7 @@ class QuoteController extends Controller
 		return response()->json(Quote::with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')->paginate(2));
 	}
 
-	public function numberQuotes(Request $request): JsonResponse
+	public function numberQuotes(NumberQuotesRequest $request): JsonResponse
 	{
 		return response()->json(
 			Quote::query()->take($request->count)
@@ -25,7 +29,7 @@ class QuoteController extends Controller
 		);
 	}
 
-	public function search(Request $request): JsonResponse
+	public function search(SearchRequest $request): JsonResponse
 	{
 		$search = $request->search;
 		if ($search[0] === '@')
@@ -43,7 +47,27 @@ class QuoteController extends Controller
 		return $this->QuotesResponse($search);
 	}
 
-	public function store(Request $request): JsonResponse
+	private function QuotesResponse($search, $type = 'quote'): JsonResponse
+	{
+		return $type == 'quote' ?
+			response()->json(
+				Quote::where('title->en', 'LIKE', $search . '%')
+				->orWhere('title->ka', 'LIKE', $search . '%')
+					->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
+					->get()
+			)
+
+		: response()->json(
+			Quote::whereHas('movie', function ($query) use ($search) {
+				$query->where('title->en', 'LIKE', $search . '%')
+				->orWhere('title->ka', 'LIKE', $search . '%');
+			})
+			->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
+			->get()
+		);
+	}
+
+	public function store(StoreQuoteRequest $request): JsonResponse
 	{
 		$quote = new Quote();
 		$quote->user_id = jwtUser()->id;
@@ -94,7 +118,7 @@ class QuoteController extends Controller
 		return response()->json($quote->load(['user', 'movie', 'comments.author'])->loadCount('likes'));
 	}
 
-	public function destroy(Quote $quote, Request $request): JsonResponse
+	public function destroy(Quote $quote, DestroyQuoteRequest $request): JsonResponse
 	{
 		$quote->delete();
 		return response()->json([
@@ -103,25 +127,5 @@ class QuoteController extends Controller
 				->with(['quotes.comments', 'quotes.likes'])
 				->first(),
 		]);
-	}
-
-	private function QuotesResponse($search, $type = 'quote'): JsonResponse
-	{
-		return $type == 'quote' ?
-			response()->json(
-				Quote::where('title->en', 'LIKE', '' . $search . '%')
-				->orWhere('title->ka', 'LIKE', '' . $search . '%')
-					->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
-					->get()
-			)
-
-		: response()->json(
-			Quote::whereHas('movie', function ($query) use ($search) {
-				$query->where('title->en', 'LIKE', '' . $search . '%')
-				->orWhere('title->ka', 'LIKE', '' . $search . '%');
-			})
-			->with(['movie', 'comments.author', 'user'])->withCount('likes')->orderBy('updated_at', 'DESC')
-			->get()
-		);
 	}
 }

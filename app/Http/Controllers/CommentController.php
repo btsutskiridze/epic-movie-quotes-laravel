@@ -28,7 +28,7 @@ class CommentController extends Controller
 				'type'     => 'comment',
 				'read'     => false,
 			]);
-			event(new NotificationEvent($notification));
+			event(new NotificationEvent($notification->load('from')));
 		}
 
 		return response()->json('comment added');
