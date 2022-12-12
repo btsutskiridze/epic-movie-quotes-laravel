@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\LowerCase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -14,7 +15,7 @@ class UpdateUserRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name' => 'unique:users,name',
+			'name' => ['unique:users,name', 'min:3', 'max:15', new LowerCase],
 		];
 	}
 }

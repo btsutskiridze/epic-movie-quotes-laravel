@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\EngTextarea;
+use App\Rules\GeoTextarea;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreQuoteRequest extends FormRequest
@@ -14,10 +16,10 @@ class StoreQuoteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'movie_id' => 'required|exists:movies,id',
-			'thumbnail'=> 'required',
-			'title_en' => 'required',
-			'title_ka' => 'required',
+			'movie_id'      => 'required|exists:movies,id',
+			'thumbnail'     => 'required',
+			'title_en'      => ['required', new EngTextarea],
+			'title_ka'      => ['required', new GeoTextarea],
 		];
 	}
 }

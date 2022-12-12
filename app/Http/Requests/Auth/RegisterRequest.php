@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\LowerCase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -14,9 +15,9 @@ class RegisterRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'    => 'required|unique:users,name',
+			'name'    => ['required', 'min:3', 'max:15', 'unique:users,name', new LowerCase],
 			'email'   => 'required|email|unique:users,email',
-			'password'=> 'required',
+			'password'=> ['required', 'min:8', 'max:15', new LowerCase],
 		];
 	}
 }

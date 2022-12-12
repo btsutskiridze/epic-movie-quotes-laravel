@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests;
 
-use App\Rules\LowerCase;
+use App\Rules\EngTextarea;
+use App\Rules\GeoTextarea;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class UpdateQuoteRequest extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -14,7 +15,7 @@ class LoginRequest extends FormRequest
 	 */
 	public function authorize()
 	{
-		return true;
+		return false;
 	}
 
 	/**
@@ -25,8 +26,8 @@ class LoginRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'    => 'exists:users,name',
-			'password'=> ['required', 'min:8', 'max:15', new LowerCase],
+			'title_en'      => ['required', new EngTextarea],
+			'title_ka'      => ['required', new GeoTextarea],
 		];
 	}
 }
